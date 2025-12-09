@@ -48,7 +48,7 @@ class EpisodePageResponseTest extends BasePageResponseTest<EpisodepageResponse, 
 
     // -----------------------------------------------------------------------------------------------------------------
     private static Stream<String> resources() {
-        return Stream.of("episode1.json");
+        return Stream.of("episode_page_1.json");
     }
 
     @MethodSource({"resources"})

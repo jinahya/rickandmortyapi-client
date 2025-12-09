@@ -48,7 +48,7 @@ class LocationPageResponseTest extends BasePageResponseTest<LocationPageResponse
 
     // -----------------------------------------------------------------------------------------------------------------
     private static Stream<String> resources() {
-        return Stream.of("location1.json");
+        return Stream.of("location_page_1.json");
     }
 
     @MethodSource({"resources"})

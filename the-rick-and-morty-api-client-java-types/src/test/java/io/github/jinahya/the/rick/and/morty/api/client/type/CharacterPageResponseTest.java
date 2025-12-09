@@ -28,7 +28,7 @@ class CharacterPageResponseTest extends BasePageResponseTest<CharacterPageRespon
     class _Test {
 
         @Test
-        void __Jackson() throws IOException {
+        void __Jackson() {
             assertThatThrownBy(() -> {
                 _JacksonTestUtils.readValueFromResource(getClass(), "character_.json", typeClass);
             }).isInstanceOf(RuntimeException.class);
@@ -42,7 +42,7 @@ class CharacterPageResponseTest extends BasePageResponseTest<CharacterPageRespon
 
     // -----------------------------------------------------------------------------------------------------------------
     private static Stream<String> resources() {
-        return Stream.of("character1.json");
+        return Stream.of("character_page_1.json");
     }
 
     @MethodSource({"resources"})
