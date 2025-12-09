@@ -14,9 +14,7 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@SuppressWarnings({
-        "java:S101" // Class names should comply with a naming convention
-})
-public abstract class _BaseRequest extends __BaseType {
+public class EpisodeResponse extends _BaseResponse<Episode> {
+
 
 }

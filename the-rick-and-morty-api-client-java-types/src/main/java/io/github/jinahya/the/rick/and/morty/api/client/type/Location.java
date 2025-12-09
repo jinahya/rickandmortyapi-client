@@ -8,15 +8,29 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.Instant;
+import java.util.List;
+
 @JsonbVisibility(___NonPrivateVisibilityStrategy.class)
 @Setter(AccessLevel.PROTECTED)
 @Getter
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@SuppressWarnings({
-        "java:S101" // Class names should comply with a naming convention
-})
-public abstract class _BaseRequest extends __BaseType {
+public class Location extends __BaseType {
 
+    // -----------------------------------------------------------------------------------------------------------------
+    private int id;
+
+    private String name;
+
+    private String type;
+
+    private String dimension;
+
+    private List<String> residents;
+
+    private String url;
+
+    private Instant created;
 }

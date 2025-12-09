@@ -2,26 +2,30 @@ package io.github.jinahya.the.rick.and.morty.api.client.type;
 
 import jakarta.json.bind.annotation.JsonbVisibility;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.Instant;
 import java.util.List;
 
 @JsonbVisibility(___NonPrivateVisibilityStrategy.class)
 @Setter(AccessLevel.PROTECTED)
 @Getter
-@ToString
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Character extends __BaseType {
 
     @JsonbVisibility(___NonPrivateVisibilityStrategy.class)
     @Setter(AccessLevel.PROTECTED)
     @Getter
-    @ToString
+    @EqualsAndHashCode(callSuper = true)
+    @ToString(callSuper = true)
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    public static class NameAndUrl {
+    public static class NameAndLink extends __BaseType {
 
         private String name;
 
@@ -41,9 +45,9 @@ public class Character extends __BaseType {
 
     private String gender;
 
-    private NameAndUrl origin;
+    private NameAndLink origin;
 
-    private NameAndUrl location;
+    private NameAndLink location;
 
     private String image;
 
@@ -51,5 +55,5 @@ public class Character extends __BaseType {
 
     private String url;
 
-    private String created;
+    private Instant created;
 }

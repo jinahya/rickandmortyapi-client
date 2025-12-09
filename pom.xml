@@ -9,12 +9,17 @@
   <packaging>pom</packaging>
 
   <name>the-rick-and-morty-api-client-java</name>
-  <!-- FIXME change it to the project's website -->
   <url>http://github.com/jinahya/${project.artifactId}</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.release>25</maven.compiler.release>
+    <project.build.outputEncoding>UTF-8</project.build.outputEncoding>
+    <maven.compiler.source>25</maven.compiler.source>
+    <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
+    <maven.compiler.release>${maven.compiler.target}</maven.compiler.release>
+    <maven.compiler.testSource>${maven.compiler.source}</maven.compiler.testSource>
+    <maven.compiler.testTarget>${maven.compiler.source}</maven.compiler.testTarget>
+    <maven.compiler.testRelease>${maven.compiler.target}</maven.compiler.testRelease>
     <version.org.projectlombok>1.18.42</version.org.projectlombok>
   </properties>
 

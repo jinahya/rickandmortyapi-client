@@ -1,11 +1,18 @@
 package io.github.jinahya.the.rick.and.morty.api.client.type;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-@JsonIgnoreProperties(ignoreUnknown = true) // TODO: remove!
+@Setter(AccessLevel.PROTECTED)
+@Getter
+@ToString
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SuppressWarnings({
+        "java:S101" // Class names should comply with a naming convention
+})
 public abstract class __BaseType {
 
-    protected __BaseType() {
-        super();
-    }
 }

@@ -11,14 +11,19 @@ import java.util.function.Function;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
-class BaseUrisTest {
+class BaseUrlResponseTest extends __BaseTypeTest<BaseUrlResponse> {
 
     private static <R> R applyResource(final Function<? super InputStream, ? extends R> mapper) throws IOException {
         Objects.requireNonNull(mapper, "mapper is null");
-        try (var stream = BaseUrisTest.class.getResourceAsStream("api.json")) {
+        try (var stream = BaseUrlResponseTest.class.getResourceAsStream("base_url.json")) {
             assertThat(stream).isNotNull();
             return mapper.apply(stream);
         }
+    }
+
+    // -----------------------------------------------------------------------------------------------------------------
+    BaseUrlResponseTest() {
+        super(BaseUrlResponse.class);
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -27,7 +32,7 @@ class BaseUrisTest {
         final var value = applyResource(r -> {
             return _JacksonTestUtils.applyObjectMapper(om -> {
                 try {
-                    return om.readValue(r, BaseUris.class);
+                    return om.readValue(r, BaseUrlResponse.class);
                 } catch (final IOException ioe) {
                     throw new RuntimeException(ioe);
                 }
@@ -41,7 +46,7 @@ class BaseUrisTest {
         final var value = applyResource(r -> {
             try {
                 return _JsonbTestUtils.applyJsonb(j -> {
-                    return j.fromJson(r, BaseUris.class);
+                    return j.fromJson(r, BaseUrlResponse.class);
                 });
             } catch (final Exception e) {
                 throw new RuntimeException(e);

@@ -15,6 +15,21 @@ final class _JsonbTestUtils {
         }
     }
 
+    static <T> T readValueFromResource(final Class<?> clazz, final String name, final Class<T> type) throws Exception {
+        Objects.requireNonNull(type, "type is null");
+        return __BaseTypeTestUtils.applyResourceStream(
+                clazz,
+                name,
+                s -> {
+                    try {
+                        return applyJsonb(j -> j.fromJson(s, type));
+                    } catch (final Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+        );
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
     private _JsonbTestUtils() {
         throw new AssertionError("instantiation is not allowed");
