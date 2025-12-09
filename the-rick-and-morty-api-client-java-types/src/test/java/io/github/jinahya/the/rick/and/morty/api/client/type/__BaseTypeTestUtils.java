@@ -17,7 +17,7 @@ final class __BaseTypeTestUtils<T extends __BaseType> {
         Objects.requireNonNull(clazz, "clazz is null");
         Objects.requireNonNull(name, "name is null");
         Objects.requireNonNull(mapper, "mapper is null");
-        try (var stream = clazz.getResourceAsStream("base_url.json")) {
+        try (var stream = clazz.getResourceAsStream(name)) {
             assertThat(stream)
                     .as("resource for /%s/%s", clazz.getPackageName().replace('.', '/'), name)
                     .isNotNull();

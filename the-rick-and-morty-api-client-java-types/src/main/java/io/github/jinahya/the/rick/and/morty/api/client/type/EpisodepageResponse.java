@@ -14,7 +14,7 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class EpisodeResponse extends _BaseResponse<Episode> {
+public class EpisodepageResponse extends BasePageResponse<Episode> {
 
 
 }

@@ -63,6 +63,11 @@
         <version>3.0.4</version>
       </dependency>
       <dependency>
+        <groupId>org.hibernate.validator</groupId>
+        <artifactId>hibernate-validator</artifactId>
+        <version>9.1.0.Final</version>
+      </dependency>
+      <dependency>
         <groupId>org.junit</groupId>
         <artifactId>junit-bom</artifactId>
         <version>5.11.0</version>

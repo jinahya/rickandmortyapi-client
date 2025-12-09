@@ -11,19 +11,19 @@ import java.util.function.Function;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
-class BaseUrlResponseTest extends __BaseTypeTest<BaseUrlResponse> {
+class _BaseUrlResponseTest extends __BaseTypeTest<_BaseUrlResponse> {
 
     private static <R> R applyResource(final Function<? super InputStream, ? extends R> mapper) throws IOException {
         Objects.requireNonNull(mapper, "mapper is null");
-        try (var stream = BaseUrlResponseTest.class.getResourceAsStream("base_url.json")) {
+        try (var stream = _BaseUrlResponseTest.class.getResourceAsStream("base_url.json")) {
             assertThat(stream).isNotNull();
             return mapper.apply(stream);
         }
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    BaseUrlResponseTest() {
-        super(BaseUrlResponse.class);
+    _BaseUrlResponseTest() {
+        super(_BaseUrlResponse.class);
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -32,7 +32,7 @@ class BaseUrlResponseTest extends __BaseTypeTest<BaseUrlResponse> {
         final var value = applyResource(r -> {
             return _JacksonTestUtils.applyObjectMapper(om -> {
                 try {
-                    return om.readValue(r, BaseUrlResponse.class);
+                    return om.readValue(r, _BaseUrlResponse.class);
                 } catch (final IOException ioe) {
                     throw new RuntimeException(ioe);
                 }
@@ -46,7 +46,7 @@ class BaseUrlResponseTest extends __BaseTypeTest<BaseUrlResponse> {
         final var value = applyResource(r -> {
             try {
                 return _JsonbTestUtils.applyJsonb(j -> {
-                    return j.fromJson(r, BaseUrlResponse.class);
+                    return j.fromJson(r, _BaseUrlResponse.class);
                 });
             } catch (final Exception e) {
                 throw new RuntimeException(e);

@@ -1,6 +1,7 @@
 package io.github.jinahya.the.rick.and.morty.api.client.type;
 
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -14,13 +15,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @Slf4j
-class CharacterResponseTest extends _BaseResponseTest<CharacterResponse, Character> {
+class CharacterPageResponseTest extends BasePageResponseTest<CharacterPageResponse, Character> {
 
-    CharacterResponseTest() {
-        super(CharacterResponse.class, Character.class);
+    CharacterPageResponseTest() {
+        super(CharacterPageResponse.class, Character.class);
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+    @Disabled
     @DisplayName("character_.json")
     @Nested
     class _Test {

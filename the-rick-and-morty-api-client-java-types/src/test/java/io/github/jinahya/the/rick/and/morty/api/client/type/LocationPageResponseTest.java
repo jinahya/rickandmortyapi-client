@@ -8,10 +8,10 @@ import java.io.IOException;
 import java.util.stream.Stream;
 
 @Slf4j
-class LocationResponseTest extends _BaseResponseTest<LocationResponse, Location> {
+class LocationPageResponseTest extends BasePageResponseTest<LocationPageResponse, Location> {
 
-    LocationResponseTest() {
-        super(LocationResponse.class, Location.class);
+    LocationPageResponseTest() {
+        super(LocationPageResponse.class, Location.class);
     }
 
 //    // -----------------------------------------------------------------------------------------------------------------

@@ -10,7 +10,7 @@
   </parent>
 
   <artifactId>the-rick-and-morty-api-client-java-types</artifactId>
-<!--  <version>0.0.1-SNAPSHOT</version>-->
+  <!--  <version>0.0.1-SNAPSHOT</version>-->
   <packaging>jar</packaging>
 
   <name>${project.artifactId}</name>
@@ -54,6 +54,11 @@
     <dependency>
       <groupId>org.eclipse</groupId>
       <artifactId>yasson</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate.validator</groupId>
+      <artifactId>hibernate-validator</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>

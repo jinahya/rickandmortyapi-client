@@ -17,7 +17,7 @@ import java.net.URI;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class BaseUrlResponse extends __BaseType {
+public class _BaseUrlResponse extends __BaseType {
 
     public static final String REQUEST_URI = "https://rickandmortyapi.com/api";
 

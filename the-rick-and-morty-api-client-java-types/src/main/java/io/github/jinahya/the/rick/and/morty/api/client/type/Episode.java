@@ -1,6 +1,11 @@
 package io.github.jinahya.the.rick.and.morty.api.client.type;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.json.bind.annotation.JsonbProperty;
 import jakarta.json.bind.annotation.JsonbVisibility;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -19,18 +24,24 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Episode extends __BaseType {
 
+    public static final String JSON_NAME_AIR_DATE = "air_date";
+
     // -----------------------------------------------------------------------------------------------------------------
-    private int id;
+    @NotNull
+    private Integer id;
 
     private String name;
 
+    @JsonProperty(JSON_NAME_AIR_DATE)
+    @JsonbProperty(JSON_NAME_AIR_DATE)
     private String airDate;
 
     private String episode;
 
-    private List<String> characters;
+    private List<@NotBlank String> characters;
 
     private String url;
 
+    @Past
     private Instant created;
 }
