@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class AsynchronousRickAndMortyApiClientJre implements AsynchronousRickAndMortyApiClient {
 
@@ -32,6 +33,26 @@ public class AsynchronousRickAndMortyApiClientJre implements AsynchronousRickAnd
 //        return InstanceHolder.INSTANCE;
 //    }
 
+    private static <T> HttpResponse.BodyHandler<Supplier<T>> newJsonBodyHandler(final ObjectMapper objectMapper,
+                                                                                final Class<T> clazz) {
+        return ri -> {
+            {
+                final var statusCode = ri.statusCode();
+                ri.headers().map().forEach((n, l) -> {
+                });
+            }
+            return HttpResponse.BodySubscribers.mapping(
+                    HttpResponse.BodySubscribers.ofInputStream(),
+                    b -> () -> {
+                        try {
+                            return objectMapper.readValue(b, clazz);
+                        } catch (final IOException ioe) {
+                            throw new RuntimeException(ioe);
+                        }
+                    });
+        };
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
     public AsynchronousRickAndMortyApiClientJre(final RickAndMortyApiClientJavaNetConfiguration configuration) {
         super();
@@ -48,7 +69,8 @@ public class AsynchronousRickAndMortyApiClientJre implements AsynchronousRickAnd
         return URI.create(configuration.getBaseUrl() + path);
     }
 
-    private <R> R applyHttpClient(final String path, final Function<? super HttpClient.Builder, ? extends R> function) {
+    private <R> R applyHttpClient(final String path,
+                                  final Function<? super HttpClient.Builder, ? extends R> function) {
         Objects.requireNonNull(function, "function is null");
         final HttpClient.Builder builder = HttpClient.newBuilder();
         final var built = builder.build();
@@ -62,15 +84,10 @@ public class AsynchronousRickAndMortyApiClientJre implements AsynchronousRickAnd
                 .GET()
                 .uri(uri("/character?page=" + page))
                 .build();
-        return httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofInputStream())
+        return httpClient
+                .sendAsync(request, newJsonBodyHandler(objectMapper, CharacterPageResponse.class))
                 .thenApply(HttpResponse::body)
-                .thenApply(b -> {
-                    try {
-                        return objectMapper.readValue(b, CharacterPageResponse.class);
-                    } catch (final IOException ioe) {
-                        throw new RuntimeException(ioe);
-                    }
-                });
+                .thenApply(Supplier::get);
     }
 
     @Override
