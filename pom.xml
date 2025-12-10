@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>io.github.jinahya</groupId>
-  <artifactId>the-rick-and-morty-api-client-java</artifactId>
+  <artifactId>rickandmortyapi-client</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <name>the-rick-and-morty-api-client-java</name>
+  <name>${project.artifactId}</name>
   <url>http://github.com/jinahya/${project.artifactId}</url>
 
   <modules>
-    <module>the-rick-and-morty-api-client-java-types</module>
-    <module>the-rick-and-morty-api-client-java-common</module>
+    <module>rickandmortyapi-client-types</module>
+    <module>rickandmortyapi-client-common</module>
+    <module>rickandmortyapi-client-java-net</module>
   </modules>
 
   <properties>
@@ -77,6 +79,18 @@
         <groupId>org.projectlombok</groupId>
         <artifactId>lombok</artifactId>
         <version>${version.org.projectlombok}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.projectreactor</groupId>
+        <artifactId>reactor-bom</artifactId>
+        <version>2025.0.1</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.reactivestreams</groupId>
+        <artifactId>reactive-streams</artifactId>
+        <version>1.0.4</version>
       </dependency>
       <dependency>
         <groupId>org.slf4j</groupId>
