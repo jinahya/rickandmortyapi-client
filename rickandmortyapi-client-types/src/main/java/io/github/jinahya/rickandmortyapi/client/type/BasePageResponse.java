@@ -34,7 +34,7 @@ public class BasePageResponse<RESULT> extends _BaseResponse {
     @EqualsAndHashCode(callSuper = true)
     @ToString
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    protected static class Info extends __BaseType {
+    public static class Info extends __BaseType {
 
         // -------------------------------------------------------------------------------------------------------------
         @PositiveOrZero

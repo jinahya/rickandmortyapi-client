@@ -4,10 +4,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.jinahya.rickandmortyapi.client.AsynchronousRickAndMortyApiClient;
 import io.github.jinahya.rickandmortyapi.client.type.CharacterPageResponse;
 import io.github.jinahya.rickandmortyapi.client.type.CharacterType;
+import jakarta.validation.constraints.NotNull;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
@@ -54,21 +58,23 @@ public class AsynchronousRickAndMortyApiClientJre implements AsynchronousRickAnd
     // ---------------------------------------------------------------------------------------------------- character(s)
     @Override
     public CompletableFuture<CharacterPageResponse> getAllCharacters(final int page) throws IOException {
-        return null;
+        final var request = HttpRequest.newBuilder()
+                .GET()
+                .uri(uri("/character?page=" + page))
+                .build();
+        return httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofInputStream())
+                .thenApply(HttpResponse::body)
+                .thenApply(b -> {
+                    try {
+                        return objectMapper.readValue(b, CharacterPageResponse.class);
+                    } catch (final IOException ioe) {
+                        throw new RuntimeException(ioe);
+                    }
+                });
     }
 
     @Override
-    public CompletableFuture<CharacterType> getAllCharacters() {
-        return null;
-    }
-
-    @Override
-    public CompletableFuture<CharacterType> getCharacters(final int... ids) {
-        return null;
-    }
-
-    @Override
-    public CompletableFuture<CharacterType> getCharacter(final int id) {
+    public CompletableFuture<List<CharacterType>> getCharacters(@NotNull int... ids) {
         return null;
     }
 
