@@ -1,5 +1,0 @@
-baseUrl: https://rickandmortyapi.com/api
-connect-timeout: 10s
-write-timeout: 10s
-read-timeout: 10s
-response-timeout: 10s

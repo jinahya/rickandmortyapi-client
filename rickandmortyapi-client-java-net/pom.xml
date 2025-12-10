@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -32,16 +31,31 @@
       <optional>true</optional>
     </dependency>
     <dependency>
+      <groupId>com.fasterxml.jackson.dataformat</groupId>
+      <artifactId>jackson-dataformat-yaml</artifactId>
+      <!--      <scope>compile</scope>-->
+      <!--      <optional>true</optional>-->
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>com.fasterxml.jackson.datatype</groupId>
       <artifactId>jackson-datatype-jsr310</artifactId>
-      <scope>compile</scope>
-      <optional>true</optional>
+      <!--      <scope>compile</scope>-->
+      <!--      <optional>true</optional>-->
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>io.github.jinahya</groupId>
       <artifactId>rickandmortyapi-client-common</artifactId>
       <version>0.0.1-SNAPSHOT</version>
       <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.github.jinahya</groupId>
+      <artifactId>rickandmortyapi-client-common</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+      <type>test-jar</type>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>jakarta.annotation</groupId>
@@ -84,56 +98,133 @@
       <artifactId>lombok</artifactId>
       <scope>provided</scope>
     </dependency>
-    <dependency>
-      <groupId>org.yaml</groupId>
-      <artifactId>snakeyaml</artifactId>
-      <scope>compile</scope>
-    </dependency>
   </dependencies>
 
   <build>
-    <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
-      <plugins>
-        <!-- clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
-        <plugin>
-          <artifactId>maven-clean-plugin</artifactId>
-          <version>3.4.0</version>
-        </plugin>
-        <!-- default lifecycle, jar packaging: see https://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_jar_packaging -->
-        <plugin>
-          <artifactId>maven-resources-plugin</artifactId>
-          <version>3.3.1</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.13.0</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>3.3.0</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-jar-plugin</artifactId>
-          <version>3.4.2</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-install-plugin</artifactId>
-          <version>3.1.2</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-deploy-plugin</artifactId>
-          <version>3.1.2</version>
-        </plugin>
-        <!-- site lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#site_Lifecycle -->
-        <plugin>
-          <artifactId>maven-site-plugin</artifactId>
-          <version>3.12.1</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-project-info-reports-plugin</artifactId>
-          <version>3.6.1</version>
-        </plugin>
-      </plugins>
-    </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>com.github.wvengen</groupId>
+        <artifactId>proguard-maven-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+          <includeDependency>false</includeDependency>
+          <!--                    <includeDependency>true</includeDependency>-->
+          <!--          <injar>${project.build.finalName}.${project.packaging}</injar>-->
+          <!--          <outjar>${project.build.finalName}-proguard.${project.packaging}</outjar>-->
+          <options>
+            <option>-keep class io.github.jinahya.rickandmortyapi.client.** { *; }</option>
+            <!--            <option>-dontshrink</option>-->
+            <option>-dontoptimize</option>
+            <!--            <option>-dontobfuscate</option>-->
+            <option>-flattenpackagehierarchy io.github.jinahya.rickandmortyapi.client.javanet.proguard.flattened</option>
+            <!-- https://www.guardsquare.com/manual/configuration/examples#library -->
+            <option>-keepparameternames</option>
+            <option>-renamesourcefileattribute SourceFile</option>
+            <option>-keepattributes
+              Signature,
+              Exceptions,
+              *Annotation*,
+              InnerClasses,
+              PermittedSubclasses,
+              EnclosingMethod,
+              Deprecated,
+              SourceFile,
+              LineNumberTable
+            </option>
+            <option>-keepclasseswithmembernames,includedescriptorclasses class * {
+              native &lt;methods&gt;;
+              }
+            </option>
+            <option>-keepclassmembers,
+              allowoptimization enum * {
+              public static **[] values(); public static ** valueOf(java.lang.String);
+              }
+            </option>
+            <option>-keepclassmembers class * implements java.io.Serializable {
+              static final long serialVersionUID;
+              private static final java.io.ObjectStreamField[] serialPersistentFields;
+              private void writeObject(java.io.ObjectOutputStream);
+              private void readObject(java.io.ObjectInputStream);
+              java.lang.Object writeReplace();
+              java.lang.Object readResolve();
+              }
+            </option>
+            <option>-ignorewarnings</option>
+            <!--            <option>-dontwarn jarkarta.annotation.*</option>-->
+            <!--            <option>-dontwarn jarkarta.annotation.**</option>-->
+            <!--            <option>-dontwarn jarkarta.json.bind.*</option>-->
+            <!--            <option>-dontwarn jarkarta.json.bind.**</option>-->
+            <!--            <option>-dontwarn jarkarta.validation.*</option>-->
+            <!--            <option>-dontwarn jarkarta.validation.**</option>-->
+            <!--            <option>-dontwarn jarkarta.validation.constraints.*</option>-->
+            <!--            <option>-dontwarn javax.xml.**</option>-->
+            <!--            <option>-dontwarn lombok.**</option>-->
+            <!--            <option>-dontwarn org.reactivestreams.**</option>-->
+            <!--            <option>-dontwarn org.xml.sax.**</option>-->
+            <!--            <option>-dontwarn org.w3c.**</option>-->
+            <!--            <option>-dontwarn org.w3c.dom.*</option>-->
+            <!--            <option>-dontwarn org.w3c.dom.**</option>-->
+            <!--            <option>-keepattributes Signature</option>-->
+            <!--            <option>-keepattributes *Annotation*</option>-->
+            <!--            <option>-keepattributes InnerClasses,EnclosingMethod</option>-->
+          </options>
+          <proguardVersion>${version.proguard-base}</proguardVersion>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>com.guardsquare</groupId>
+            <artifactId>proguard-core</artifactId>
+            <version>${version.proguard-core}</version>
+            <scope>runtime</scope>
+          </dependency>
+        </dependencies>
+        <executions>
+          <execution>
+            <id>proguard</id>
+            <!--            <phase>package</phase>-->
+            <phase>install</phase>
+            <goals>
+              <goal>proguard</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <!--              <goal>shade</goal>-->
+            </goals>
+            <configuration>
+              <relocations>
+                <relocation>
+                  <pattern>com.fasterxml.jackson</pattern>
+                  <!--                  <shadedPattern>io.github.jinahya.rickandmortyapi.client.shaded.com.fasterxml.jackson</shadedPattern>-->
+                  <shadedPattern>io.github.jinahya.shaded.com.fasterxml.jackson</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.yaml</pattern>
+                  <!--                  <shadedPattern>io.github.jinahya.rickandmortyapi.client.shaded.org.yaml</shadedPattern>-->
+                  <shadedPattern>io.github.jinahya.shaded.org.yaml</shadedPattern>
+                </relocation>
+                <!--                <relocation>-->
+                <!--                  <pattern>com.fasterxml.jackson.dataformat</pattern>-->
+                <!--                  <shadedPattern>io.github.jinahya.rickandmortyapi.client.shaded.jackson.dataformat</shadedPattern>-->
+                <!--                </relocation>-->
+              </relocations>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+<!--                  <mainClass>io.github.jinahya.rickandmortyapi.client.javanet.Main</mainClass>-->
+                </transformer>
+              </transformers>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
   </build>
 </project>

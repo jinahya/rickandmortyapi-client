@@ -3,6 +3,7 @@ package io.github.jinahya.rickandmortyapi.client;
 import jakarta.annotation.Nullable;
 
 import java.time.Duration;
+import java.util.Optional;
 
 public abstract class AbstractRickAndMortyApiClientConfiguration implements RickAndMortyApiClientConfiguration {
 
@@ -14,10 +15,11 @@ public abstract class AbstractRickAndMortyApiClientConfiguration implements Rick
     // --------------------------------------------------------------------------------------------------------- baseUrl
     @Override
     public String getBaseUrl() {
-        return baseUrl;
+        return Optional.ofNullable(baseUrl)
+                .orElseGet(RickAndMortyApiClientConfiguration.super::getBaseUrl);
     }
 
-    public void setBaseUrl(String baseUrl) {
+    public void setBaseUrl(final String baseUrl) {
         this.baseUrl = baseUrl;
     }
 
@@ -25,7 +27,8 @@ public abstract class AbstractRickAndMortyApiClientConfiguration implements Rick
     @Nullable
     @Override
     public Duration getConnectTimeout() {
-        return connectTimeout;
+        return Optional.ofNullable(connectTimeout)
+                .orElseGet(RickAndMortyApiClientConfiguration.super::getConnectTimeout);
     }
 
     public void setConnectTimeout(final Duration connectTimeout) {
@@ -36,7 +39,8 @@ public abstract class AbstractRickAndMortyApiClientConfiguration implements Rick
     @Nullable
     @Override
     public Duration getWriteTimeout() {
-        return writeTimeout;
+        return Optional.ofNullable(writeTimeout)
+                .orElseGet(RickAndMortyApiClientConfiguration.super::getWriteTimeout);
     }
 
     public void setWriteTimeout(final Duration writeTimeout) {
@@ -47,7 +51,8 @@ public abstract class AbstractRickAndMortyApiClientConfiguration implements Rick
     @Nullable
     @Override
     public Duration getReadTimeout() {
-        return readTimeout;
+        return Optional.ofNullable(readTimeout)
+                .orElseGet(RickAndMortyApiClientConfiguration.super::getReadTimeout);
     }
 
     public void setReadTimeout(final Duration readTimeout) {
@@ -58,7 +63,8 @@ public abstract class AbstractRickAndMortyApiClientConfiguration implements Rick
     @Nullable
     @Override
     public Duration getResponseTimeout() {
-        return responseTimeout;
+        return Optional.ofNullable(responseTimeout)
+                .orElseGet(RickAndMortyApiClientConfiguration.super::getResponseTimeout);
     }
 
     public void setResponseTimeout(final Duration responseTimeout) {

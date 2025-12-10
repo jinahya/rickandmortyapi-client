@@ -7,6 +7,7 @@ import io.github.jinahya.rickandmortyapi.client.type.EpisodeType;
 import io.github.jinahya.rickandmortyapi.client.type.LocationPageResponse;
 import io.github.jinahya.rickandmortyapi.client.type.LocationType;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
@@ -21,23 +22,29 @@ public interface RickAndMortyApiClient {
     // ------------------------------------------------------------------------------------------------------- character
 
     /**
-     * Returns a character page of the specified page number.
+     * Reads characters on the specified page.
      *
-     * @param page the page number; must be positive.
-     * @return a character page response.
+     * @param page the page; must be positive.
+     * @return an optional of the characters, on the {@code page}; {@link Optional#empty()} if the specified page does
+     * not exist.
      */
     @Valid
     @NotNull
     Optional<CharacterPageResponse> getAllCharacters(@Positive int page) throws IOException;
 
-    @NotNull
+    /**
+     * Reads all characters.
+     *
+     * @return a list of all characters.
+     */
+    @NotEmpty
     default List<@Valid @NotNull CharacterType> getAllCharacters() {
         return IntStream.iterate(1, v -> v + 1)
                 .mapToObj(p -> {
                     try {
                         return getAllCharacters(p);
                     } catch (final IOException ioe) {
-                        throw new UncheckedIOException(ioe);
+                        throw new UncheckedIOException("failed to get characters on page " + p, ioe);
                     }
                 })
                 .takeWhile(Optional::isPresent)
@@ -46,11 +53,11 @@ public interface RickAndMortyApiClient {
     }
 
     @NotNull
-    List<@Valid @NotNull CharacterType> getCharacters(@NotNull int... ids);
+    List<@Valid @NotNull CharacterType> getCharacters(@NotNull int... ids) throws IOException;
 
     @Valid
     @NotNull
-    default Optional<CharacterType> getCharacter(int id) {
+    default Optional<CharacterType> getCharacter(final int id) throws IOException {
         return getCharacters(id).stream().findFirst();
     }
 
