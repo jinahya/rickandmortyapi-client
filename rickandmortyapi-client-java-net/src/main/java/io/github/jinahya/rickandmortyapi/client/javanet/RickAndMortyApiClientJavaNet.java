@@ -47,6 +47,10 @@ public class RickAndMortyApiClientJavaNet implements RickAndMortyApiClient {
         this.configuration = Objects.requireNonNull(configuration, "configuration is null");
     }
 
+    RickAndMortyApiClientJavaNet() {
+        this(new RickAndMortyApiClientJavaNetConfiguration());
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
     private <R> R applyConnection(final String path,
                                   final Consumer<? super HttpURLConnection> consumer,

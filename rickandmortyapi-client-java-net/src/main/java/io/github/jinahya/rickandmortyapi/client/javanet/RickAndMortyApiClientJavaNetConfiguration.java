@@ -1,57 +1,45 @@
 package io.github.jinahya.rickandmortyapi.client.javanet;
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import io.github.jinahya.rickandmortyapi.client.AbstractRickAndMortyApiClientConfiguration;
 
-import java.io.IOException;
-import java.lang.invoke.MethodHandles;
+import java.net.URLConnection;
+import java.net.http.HttpClient;
+import java.util.Objects;
+import java.util.Optional;
 
 public class RickAndMortyApiClientJavaNetConfiguration extends AbstractRickAndMortyApiClientConfiguration {
 
-    private static final System.Logger logger = System.getLogger(MethodHandles.lookup().lookupClass().getName());
-
     // -----------------------------------------------------------------------------------------------------------------
-    public static final String RESOURCE_NAME = "rickandmortyapi-client-javanet-configuration.yaml";
-
-    public static RickAndMortyApiClientJavaNetConfiguration load() throws IOException {
-        try (var resource = RickAndMortyApiClientJavaNetConfiguration.class.getResourceAsStream(RESOURCE_NAME)) {
-            if (resource == null) {
-                return new RickAndMortyApiClientJavaNetConfiguration();
-            }
-            final var mapper = new YAMLMapper()
-                    .findAndRegisterModules()
-                    .setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
-            final var value = mapper.readValue(resource, RickAndMortyApiClientJavaNetConfiguration.class);
-            logger.log(System.Logger.Level.DEBUG, "value: {0}", value);
-            return value;
-        }
+    public RickAndMortyApiClientJavaNetConfiguration() {
+        super();
     }
 
-//    private static final class InstanceHolder {
-//
-//        private static final RickAndMortyApiClientJavaNetConfiguration INSTANCE;
-//
-//        static {
-//            try {
-//                INSTANCE = load();
-//            } catch (final IOException ioe) {
-//                ioe.printStackTrace();
-//                throw new ExceptionInInitializerError(ioe);
-//            }
-//        }
-//
-//        private InstanceHolder() {
-//            throw new AssertionError("instantiation is not allowed");
-//        }
-//    }
-//
-//    static RickAndMortyApiClientJavaNetConfiguration getInstance() {
-//        return InstanceHolder.INSTANCE;
-//    }
+    <T extends URLConnection> T configure(final T connection) {
+        Objects.requireNonNull(connection, "connection is null");
+        Optional.ofNullable(getConnectTimeout()).ifPresent(v -> {
+            connection.setConnectTimeout(Math.toIntExact(v.toMillis()));
+        });
+        Optional.ofNullable(getWriteTimeout()).ifPresent(v -> {
+        });
+        Optional.ofNullable(getReadTimeout()).ifPresent(v -> {
+            connection.setReadTimeout(Math.toIntExact(v.toMillis()));
+        });
+        Optional.ofNullable(getResponseTimeout()).ifPresent(v -> {
+        });
+        return connection;
+    }
 
-    // -----------------------------------------------------------------------------------------------------------------
-    private RickAndMortyApiClientJavaNetConfiguration() {
-        super();
+    HttpClient.Builder configure(final HttpClient.Builder builder) {
+        Objects.requireNonNull(builder, "builder is null");
+        Optional.ofNullable(getConnectTimeout()).ifPresent(v -> {
+            builder.connectTimeout(v);
+        });
+        Optional.ofNullable(getWriteTimeout()).ifPresent(v -> {
+        });
+        Optional.ofNullable(getReadTimeout()).ifPresent(v -> {
+        });
+        Optional.ofNullable(getResponseTimeout()).ifPresent(v -> {
+        });
+        return builder;
     }
 }
