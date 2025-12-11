@@ -25,12 +25,13 @@ public interface RickAndMortyApiClient {
      * Reads characters on the specified page.
      *
      * @param page the page; must be positive.
-     * @return an optional of the characters, on the {@code page}; {@link Optional#empty()} if the specified page does
-     * not exist.
+     * @return an optional of the characters, on the {@code page}; {@link Optional#empty() empty} if the specified page
+     * does not exist.
+     * @throws IllegalArgumentException if {@code page} is not positive.
+     * @throws IOException              if an I/O error occurs.
+     * @see <a href="https://rickandmortyapi.com/documentation/#get-all-characters">Get all characters</a>
      */
-    @Valid
-    @NotNull
-    Optional<CharacterPageResponse> getAllCharacters(@Positive int page) throws IOException;
+    Optional<CharacterPageResponse> getAllCharacters(int page) throws IOException;
 
     /**
      * Reads all characters.
@@ -57,53 +58,63 @@ public interface RickAndMortyApiClient {
 
     @Valid
     @NotNull
-    default Optional<CharacterType> getCharacter(final int id) throws IOException {
-        return getCharacters(id).stream().findFirst();
-    }
+    Optional<CharacterType> getCharacter(final int id) throws IOException;
 
     // --------------------------------------------------------------------------------------------------------- episode
     @Valid
     @NotNull
-    Optional<EpisodePageResponse> getAllEpisodes(@Positive int page);
+    Optional<EpisodePageResponse> getAllEpisodes(@Positive int page) throws IOException;
 
     @NotNull
     default List<@Valid @NotNull EpisodeType> getAllEpisodes() {
         return IntStream.iterate(1, v -> v + 1)
-                .mapToObj(this::getAllEpisodes)
+                .mapToObj(p -> {
+                    try {
+                        return getAllEpisodes(p);
+                    } catch (final IOException ioe) {
+                        throw new UncheckedIOException("failed to get episodes on page " + p, ioe);
+                    }
+                })
                 .takeWhile(Optional::isPresent)
                 .flatMap(v -> v.get().getResults().stream())
                 .toList();
     }
 
     @NotNull
-    List<@Valid @NotNull EpisodeType> getEpisodes(@NotNull int... ids);
+    List<@Valid @NotNull EpisodeType> getEpisodes(@NotNull int... ids) throws IOException;
 
     @Valid
     @NotNull
-    default Optional<EpisodeType> getEpisode(int id) {
+    default Optional<EpisodeType> getEpisode(int id) throws IOException {
         return getEpisodes(id).stream().findFirst();
     }
 
     // -------------------------------------------------------------------------------------------------------- location
     @Valid
     @NotNull
-    Optional<LocationPageResponse> getAllLocations(@Positive int page);
+    Optional<LocationPageResponse> getAllLocations(@Positive int page) throws IOException;
 
     @NotNull
     default List<@Valid @NotNull LocationType> getAllLocations() {
         return IntStream.iterate(1, v -> v + 1)
-                .mapToObj(this::getAllLocations)
+                .mapToObj(p -> {
+                    try {
+                        return getAllLocations(p);
+                    } catch (final IOException ioe) {
+                        throw new UncheckedIOException("failed to get locations on page " + p, ioe);
+                    }
+                })
                 .takeWhile(Optional::isPresent)
                 .flatMap(v -> v.get().getResults().stream())
                 .toList();
     }
 
     @NotNull
-    List<@Valid @NotNull LocationType> getLocations(@NotNull int... ids);
+    List<@Valid @NotNull LocationType> getLocations(@NotNull int... ids) throws IOException;
 
     @Valid
     @NotNull
-    default Optional<LocationType> getLocation(int id) {
+    default Optional<LocationType> getLocation(int id) throws IOException {
         return getLocations(id).stream().findFirst();
     }
 }

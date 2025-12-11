@@ -13,7 +13,7 @@
   <modules>
     <module>rickandmortyapi-client-types</module>
     <module>rickandmortyapi-client-common</module>
-    <module>rickandmortyapi-client-java-net</module>
+    <module>rickandmortyapi-client-jre</module>
   </modules>
 
   <properties>
