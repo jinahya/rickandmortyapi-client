@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.json.bind.annotation.JsonbProperty;
 import jakarta.json.bind.annotation.JsonbVisibility;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
@@ -22,14 +21,11 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class EpisodeType extends __BaseType {
+public class EpisodeType extends BaseSingularType {
 
     public static final String JSON_NAME_AIR_DATE = "air_date";
 
     // -----------------------------------------------------------------------------------------------------------------
-    @NotNull
-    private Integer id;
-
     private String name;
 
     @JsonProperty(JSON_NAME_AIR_DATE)

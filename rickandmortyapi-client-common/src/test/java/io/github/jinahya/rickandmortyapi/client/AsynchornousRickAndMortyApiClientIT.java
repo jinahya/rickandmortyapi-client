@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import java.io.IOException;
+import java.time.Duration;
 import java.util.Comparator;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
@@ -17,9 +17,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @Slf4j
-public abstract class RickAndMortyApiClientIT<T extends RickAndMortyApiClient> {
+@SuppressWarnings({
+        "java:S119" // Type parameter names should comply with a naming convention
+})
+public abstract class AsynchornousRickAndMortyApiClientIT<CLIENT extends AsynchronousRickAndMortyApiClient> {
 
-    protected RickAndMortyApiClientIT(final Class<T> clientClass) {
+    protected AsynchornousRickAndMortyApiClientIT(final Class<CLIENT> clientClass) {
         super();
         this.clientClass = Objects.requireNonNull(clientClass, "clientClass is null");
     }
@@ -31,23 +34,31 @@ public abstract class RickAndMortyApiClientIT<T extends RickAndMortyApiClient> {
 
         @ValueSource(ints = {1, 42})
         @ParameterizedTest
-        void __(final int page) throws IOException {
+        void __(final int page) {
             // --------------------------------------------------------------------------------------------------- given
             final var instance = newClientInstance();
             // ---------------------------------------------------------------------------------------------------- when
             final var result = instance.getAllCharacters(page);
             // ---------------------------------------------------------------------------------------------------- then
-            assertThat(result).hasValueSatisfying(v -> {
-                log.debug("page: {}, first: {}", page, v.getResults().getFirst());
-                log.debug("page: {}, last: {}", page, v.getResults().getLast());
-            });
+            assertThat(result)
+                    .succeedsWithin(Duration.ofSeconds(20L))
+                    .satisfies(v -> {
+                        assertThat(v).isNotNull();
+                    })
+            ;
         }
 
         @Test
-        void _Empty_BeyondLastPage() throws IOException {
+        void _Empty_BeyondLastPage() {
+            final var page = RickAndMortyApiClientTestConstants.CHARACTERS_PAGE_COUNT + 1;
             final var instance = newClientInstance();
-            final var result = instance.getAllCharacters(43);
-            assertThat(result).isEmpty();
+            final var result = instance.getAllCharacters(page);
+            assertThat(result)
+                    .succeedsWithin(Duration.ofSeconds(20L))
+                    .satisfies(v -> {
+                        assertThat(v).isNull();
+                    })
+            ;
         }
     }
 
@@ -57,11 +68,19 @@ public abstract class RickAndMortyApiClientIT<T extends RickAndMortyApiClient> {
 
         @Test
         void __() {
+            // --------------------------------------------------------------------------------------------------- given
             final var instance = newClientInstance();
+            // ---------------------------------------------------------------------------------------------------- when
             final var result = instance.getAllCharacters();
+            // ---------------------------------------------------------------------------------------------------- then
             assertThat(result)
-                    .hasSize(826)
-                    .isSortedAccordingTo(Comparator.comparingInt(CharacterType::getId));
+                    .succeedsWithin(Duration.ofMinutes(2L))
+                    .satisfies(v -> {
+                        assertThat(v)
+                                .hasSize(RickAndMortyApiClientTestConstants.NUMBER_OF_ALL_CHARACTERS)
+                                .isSortedAccordingTo(Comparator.comparingInt(CharacterType::getId));
+                    })
+            ;
         }
     }
 
@@ -94,19 +113,24 @@ public abstract class RickAndMortyApiClientIT<T extends RickAndMortyApiClient> {
         }
 
         @Test
-        void __() throws IOException {
+        void __() {
             // --------------------------------------------------------------------------------------------------- given
             final var instance = newClientInstance();
             final var ids = new int[]{1, 2, 3};
             // ---------------------------------------------------------------------------------------------------- when
             final var result = instance.getCharacters(ids);
             // ---------------------------------------------------------------------------------------------------- then
-            assertThat(result).hasSize(3)
-                    .isSortedAccordingTo(Comparator.comparingInt(CharacterType::getId))
-                    .satisfies(l -> {
-                        assertThat(l.getFirst().getId()).isEqualTo(ids[0]);
-                        assertThat(l.getLast().getId()).isEqualTo(ids[ids.length - 1]);
-                    });
+            assertThat(result)
+                    .succeedsWithin(Duration.ofSeconds(20L))
+                    .satisfies(v -> {
+                        assertThat(v).hasSize(3)
+                                .isSortedAccordingTo(Comparator.comparingInt(CharacterType::getId))
+                                .satisfies(l -> {
+                                    assertThat(l.getFirst().getId()).isEqualTo(ids[0]);
+                                    assertThat(l.getLast().getId()).isEqualTo(ids[ids.length - 1]);
+                                });
+                    })
+            ;
         }
     }
 
@@ -136,31 +160,37 @@ public abstract class RickAndMortyApiClientIT<T extends RickAndMortyApiClient> {
 
         @DisplayName("({beyond-last-id}){empty}")
         @Test
-        void _Empty_BeyondLastId() throws IOException {
+        void _Empty_BeyondLastId() {
             // --------------------------------------------------------------------------------------------------- given
             final var id = 1048576;
             final var instance = newClientInstance();
             // ---------------------------------------------------------------------------------------------------- when
             final var result = instance.getCharacter(id);
             // ---------------------------------------------------------------------------------------------------- then
-            assertThat(result).isEmpty();
+            assertThat(result).succeedsWithin(Duration.ofSeconds(20L)).satisfies(v -> {
+                assertThat(v).isNull();
+            });
         }
 
         @DisplayName("({one}){present}")
         @Test
-        void __One() throws IOException {
+        void __One() {
             // --------------------------------------------------------------------------------------------------- given
             final var instance = newClientInstance();
             final var id = 1;
             // ---------------------------------------------------------------------------------------------------- when
             final var result = instance.getCharacter(id);
             // ---------------------------------------------------------------------------------------------------- then
-            assertThat(result).isPresent();
+            assertThat(result)
+                    .succeedsWithin(Duration.ofSeconds(20L))
+                    .satisfies(v -> {
+                        assertThat(v).isNotNull();
+                    });
         }
     }
 
     // ----------------------------------------------------------------------------------------------------- clientClass
-    protected T newClientInstance() {
+    protected CLIENT newClientInstance() {
         try {
             final var constructor = clientClass.getDeclaredConstructor();
             if (!constructor.canAccess(null)) {
@@ -173,5 +203,5 @@ public abstract class RickAndMortyApiClientIT<T extends RickAndMortyApiClient> {
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    protected final Class<T> clientClass;
+    protected final Class<CLIENT> clientClass;
 }

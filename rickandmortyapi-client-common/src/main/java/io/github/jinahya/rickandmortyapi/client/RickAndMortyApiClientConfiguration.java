@@ -15,21 +15,21 @@ public interface RickAndMortyApiClientConfiguration {
     // -----------------------------------------------------------------------------------------------------------------
     @Nullable
     default Duration getConnectTimeout() {
-        return Duration.ofSeconds(10L);
+        return Duration.ofSeconds(8L);
     }
 
     @Nullable
     default Duration getWriteTimeout() {
-        return Duration.ofSeconds(10L);
+        return Duration.ofSeconds(8L);
     }
 
     @Nullable
     default Duration getReadTimeout() {
-        return Duration.ofSeconds(10L);
+        return Duration.ofSeconds(8L);
     }
 
     @Nullable
     default Duration getResponseTimeout() {
-        return Duration.ofSeconds(10L);
+        return Duration.ofSeconds(8L);
     }
 }

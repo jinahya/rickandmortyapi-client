@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serial;
 import java.time.Instant;
 import java.util.List;
 
@@ -17,8 +18,12 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CharacterType extends __BaseType {
+public class CharacterType extends BaseSingularType {
 
+    @Serial
+    private static final long serialVersionUID = -7867037207488854753L;
+
+    // -----------------------------------------------------------------------------------------------------------------
     @JsonbVisibility(___NonPrivateVisibilityStrategy.class)
     @Setter(AccessLevel.PROTECTED)
     @Getter
@@ -27,14 +32,16 @@ public class CharacterType extends __BaseType {
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class NameAndLink extends __BaseType {
 
+        @Serial
+        private static final long serialVersionUID = 7184812096300183319L;
+
+        // -------------------------------------------------------------------------------------------------------------
         private String name;
 
         private String url;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    private int id;
-
     private String name;
 
     private String status;

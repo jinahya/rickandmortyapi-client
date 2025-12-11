@@ -1,5 +1,6 @@
 package io.github.jinahya.rickandmortyapi.client.type;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
@@ -29,6 +30,21 @@ final class _JacksonTestUtils {
         );
     }
 
+    static <T> T readValueFromResource(final Class<?> clazz, final String name, final TypeReference<T> typeReference)
+            throws IOException {
+        Objects.requireNonNull(typeReference, "typeReference is null");
+        return __BaseTypeTestUtils.applyResourceStream(
+                clazz,
+                name,
+                s -> applyObjectMapper(om -> {
+                    try {
+                        return om.readValue(s, typeReference);
+                    } catch (final IOException ioe) {
+                        throw new RuntimeException(ioe);
+                    }
+                })
+        );
+    }
 
     // -----------------------------------------------------------------------------------------------------------------
     private _JacksonTestUtils() {

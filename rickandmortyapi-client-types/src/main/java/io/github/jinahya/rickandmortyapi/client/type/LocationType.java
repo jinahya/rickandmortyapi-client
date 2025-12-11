@@ -17,11 +17,9 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class LocationType extends __BaseType {
+public class LocationType extends BaseSingularType {
 
     // -----------------------------------------------------------------------------------------------------------------
-    private int id;
-
     private String name;
 
     private String type;

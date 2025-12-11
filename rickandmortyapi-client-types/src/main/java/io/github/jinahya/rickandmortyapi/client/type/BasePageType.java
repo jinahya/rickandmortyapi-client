@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serial;
 import java.net.URI;
 import java.util.List;
 
@@ -21,13 +22,21 @@ import java.util.List;
 @Getter
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuppressWarnings({
         "java:S101", // Class names should comply with a naming convention
         "java:S119"  // Type parameter names should comply with a naming convention
 })
-public class BasePage<RESULT> extends _BaseResponse {
+public abstract class BasePageType<RESULT extends BaseSingularType> extends _BaseResponse {
 
+    @Serial
+    private static final long serialVersionUID = -8777583664213758271L;
+
+    // -----------------------------------------------------------------------------------------------------------------
+    protected BasePageType() {
+        super();
+    }
+
+    // -----------------------------------------------------------------------------------------------------------------
     @JsonbVisibility(___NonPrivateVisibilityStrategy.class)
     @Setter(AccessLevel.PROTECTED)
     @Getter
@@ -35,6 +44,9 @@ public class BasePage<RESULT> extends _BaseResponse {
     @ToString
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class Info extends __BaseType {
+
+        @Serial
+        private static final long serialVersionUID = 4910760888074220532L;
 
         // -------------------------------------------------------------------------------------------------------------
         @PositiveOrZero

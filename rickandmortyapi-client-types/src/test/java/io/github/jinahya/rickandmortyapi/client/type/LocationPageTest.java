@@ -8,9 +8,9 @@ import java.io.IOException;
 import java.util.stream.Stream;
 
 @Slf4j
-class LocationPageResponseTest extends BasePageResponseTest<LocationPage, LocationType> {
+class LocationPageTest extends BasePageTypeTest<LocationPage, LocationType> {
 
-    LocationPageResponseTest() {
+    LocationPageTest() {
         super(LocationPage.class, LocationType.class);
     }
 

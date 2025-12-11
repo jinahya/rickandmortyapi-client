@@ -1,6 +1,8 @@
 package io.github.jinahya.rickandmortyapi.client;
 
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public final class RickAndMortyApiClientUtils {
 
@@ -16,6 +18,12 @@ public final class RickAndMortyApiClientUtils {
             throw new IllegalArgumentException("empty ids");
         }
         return ids;
+    }
+
+    public static String joinIds(final int... ids) {
+        assert ids != null;
+        assert ids.length > 0;
+        return IntStream.of(ids).mapToObj(String::valueOf).collect(Collectors.joining(","));
     }
 
     public static int requirePositiveId(final int id) {

@@ -8,9 +8,9 @@ import java.io.IOException;
 import java.util.stream.Stream;
 
 @Slf4j
-class EpisodePageResponseTest extends BasePageResponseTest<EpisodePage, EpisodeType> {
+class EpisodePageTest extends BasePageTypeTest<EpisodePage, EpisodeType> {
 
-    EpisodePageResponseTest() {
+    EpisodePageTest() {
         super(EpisodePage.class, EpisodeType.class);
     }
 

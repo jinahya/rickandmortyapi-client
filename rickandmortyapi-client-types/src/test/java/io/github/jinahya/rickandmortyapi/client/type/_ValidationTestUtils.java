@@ -19,10 +19,14 @@ final class _ValidationTestUtils {
         }
     }
 
-    static <T> T requireValid(final T object, final Class<?>... groups) {
+    static void assertValid(final Object object, final Class<?>... groups) {
         assertThat(validate(object, groups))
                 .as("constraint validations of %s, with %s", object, Arrays.toString(groups))
                 .isEmpty();
+    }
+
+    static <T> T requireValid(final T object, final Class<?>... groups) {
+        assertValid(object, groups);
         return object;
     }
 

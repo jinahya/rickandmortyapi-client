@@ -15,9 +15,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @Slf4j
-class CharacterPageResponseTest extends BasePageResponseTest<CharacterPage, CharacterType> {
+class CharacterPageTest extends BasePageTypeTest<CharacterPage, CharacterType> {
 
-    CharacterPageResponseTest() {
+    CharacterPageTest() {
         super(CharacterPage.class, CharacterType.class);
     }
 

@@ -1,6 +1,7 @@
 package io.github.jinahya.rickandmortyapi.client.jre;
 
 import io.github.jinahya.rickandmortyapi.client.AsynchronousRickAndMortyApiClient;
+import io.github.jinahya.rickandmortyapi.client.RickAndMortyApiClientUtils;
 import io.github.jinahya.rickandmortyapi.client.type.CharacterPage;
 import io.github.jinahya.rickandmortyapi.client.type.CharacterType;
 
@@ -9,21 +10,22 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
-public class AsynchornousRickAndMortyApiClientJavaNet implements AsynchronousRickAndMortyApiClient {
+public class AsynchronousRickAndMortyApiClientJavaNet implements AsynchronousRickAndMortyApiClient {
 
     // -----------------------------------------------------------------------------------------------------------------
-    public AsynchornousRickAndMortyApiClientJavaNet(final RickAndMortyApiClientJavaNet synchronous) {
+    public AsynchronousRickAndMortyApiClientJavaNet(final RickAndMortyApiClientJavaNet synchronous) {
         super();
         this.synchronous = Objects.requireNonNull(synchronous, "synchronous is null");
     }
 
-    AsynchornousRickAndMortyApiClientJavaNet() {
+    AsynchronousRickAndMortyApiClientJavaNet() {
         this(new RickAndMortyApiClientJavaNet());
     }
 
-    // -----------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------ characters
     @Override
     public CompletableFuture<CharacterPage> getAllCharacters(final int page) {
+        RickAndMortyApiClientUtils.requirePositivePage(page);
         return CompletableFuture.supplyAsync(() -> {
             try {
                 return synchronous.getAllCharacters(page).orElse(null);
@@ -40,6 +42,7 @@ public class AsynchornousRickAndMortyApiClientJavaNet implements AsynchronousRic
 
     @Override
     public CompletableFuture<List<CharacterType>> getCharacters(final int... ids) {
+        RickAndMortyApiClientUtils.requireNonEmptyIds(ids);
         return CompletableFuture.supplyAsync(() -> {
             try {
                 return synchronous.getCharacters(ids);
@@ -51,9 +54,7 @@ public class AsynchornousRickAndMortyApiClientJavaNet implements AsynchronousRic
 
     @Override
     public CompletableFuture<CharacterType> getCharacter(final int id) {
-        if (id < 1) {
-            throw new IllegalArgumentException("is is not positive: " + id);
-        }
+        RickAndMortyApiClientUtils.requirePositiveId(id);
         return CompletableFuture.supplyAsync(() -> {
             try {
                 return synchronous.getCharacter(id).orElse(null);

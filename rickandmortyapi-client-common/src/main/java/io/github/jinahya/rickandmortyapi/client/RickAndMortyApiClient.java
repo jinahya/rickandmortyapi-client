@@ -31,6 +31,7 @@ public interface RickAndMortyApiClient {
      * @throws IOException              if an I/O error occurs.
      * @see <a href="https://rickandmortyapi.com/documentation/#get-all-characters">Get all characters</a>
      */
+    @Valid
     Optional<CharacterPage> getAllCharacters(int page) throws IOException;
 
     /**
@@ -57,8 +58,7 @@ public interface RickAndMortyApiClient {
     List<@Valid @NotNull CharacterType> getCharacters(@NotNull int... ids) throws IOException;
 
     @Valid
-    @NotNull
-    Optional<CharacterType> getCharacter(final int id) throws IOException;
+    Optional<CharacterType> getCharacter(@Positive int id) throws IOException;
 
     // --------------------------------------------------------------------------------------------------------- episode
     @Valid
@@ -84,10 +84,7 @@ public interface RickAndMortyApiClient {
     List<@Valid @NotNull EpisodeType> getEpisodes(@NotNull int... ids) throws IOException;
 
     @Valid
-    @NotNull
-    default Optional<EpisodeType> getEpisode(int id) throws IOException {
-        return getEpisodes(id).stream().findFirst();
-    }
+    Optional<EpisodeType> getEpisode(@Positive int id) throws IOException;
 
     // -------------------------------------------------------------------------------------------------------- location
     @Valid
@@ -112,9 +109,5 @@ public interface RickAndMortyApiClient {
     @NotNull
     List<@Valid @NotNull LocationType> getLocations(@NotNull int... ids) throws IOException;
 
-    @Valid
-    @NotNull
-    default Optional<LocationType> getLocation(int id) throws IOException {
-        return getLocations(id).stream().findFirst();
-    }
+    Optional<LocationType> getLocation(@Positive int id) throws IOException;
 }
