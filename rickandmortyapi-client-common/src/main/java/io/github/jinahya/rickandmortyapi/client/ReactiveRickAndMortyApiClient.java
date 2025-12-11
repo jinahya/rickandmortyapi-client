@@ -1,6 +1,6 @@
 package io.github.jinahya.rickandmortyapi.client;
 
-import io.github.jinahya.rickandmortyapi.client.type.CharacterPageResponse;
+import io.github.jinahya.rickandmortyapi.client.type.CharacterPage;
 import io.github.jinahya.rickandmortyapi.client.type.CharacterType;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -12,7 +12,7 @@ public interface ReactiveRickAndMortyApiClient {
 
     // ------------------------------------------------------------------------------------------------------- character
     @NotNull
-    Publisher<CharacterPageResponse> getAllCharacters(@Positive int page) throws IOException;
+    Publisher<CharacterPage> getAllCharacters(@Positive int page) throws IOException;
 
     @NotNull
     Publisher<CharacterType> getAllCharacters();

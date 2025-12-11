@@ -5,11 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.jinahya.rickandmortyapi.client.RickAndMortyApiClient;
 import io.github.jinahya.rickandmortyapi.client.RickAndMortyApiClientConstants;
 import io.github.jinahya.rickandmortyapi.client.RickAndMortyApiClientUtils;
-import io.github.jinahya.rickandmortyapi.client.type.CharacterPageResponse;
+import io.github.jinahya.rickandmortyapi.client.type.CharacterPage;
 import io.github.jinahya.rickandmortyapi.client.type.CharacterType;
-import io.github.jinahya.rickandmortyapi.client.type.EpisodePageResponse;
+import io.github.jinahya.rickandmortyapi.client.type.EpisodePage;
 import io.github.jinahya.rickandmortyapi.client.type.EpisodeType;
-import io.github.jinahya.rickandmortyapi.client.type.LocationPageResponse;
+import io.github.jinahya.rickandmortyapi.client.type.LocationPage;
 import io.github.jinahya.rickandmortyapi.client.type.LocationType;
 
 import java.io.IOException;
@@ -107,11 +107,11 @@ public class RickAndMortyApiClientJavaNet implements RickAndMortyApiClient {
 
     // ------------------------------------------------------------------------------------------------------ characters
     @Override
-    public Optional<CharacterPageResponse> getAllCharacters(final int page) throws IOException {
+    public Optional<CharacterPage> getAllCharacters(final int page) throws IOException {
         RickAndMortyApiClientUtils.requirePositivePage(page);
         return Optional.ofNullable(read(
                 "/character?" + RickAndMortyApiClientConstants.PARAM_PAGE + "=" + page,
-                CharacterPageResponse.class
+                CharacterPage.class
         ));
     }
 
@@ -136,11 +136,11 @@ public class RickAndMortyApiClientJavaNet implements RickAndMortyApiClient {
 
     // -------------------------------------------------------------------------------------------------------- episodes
     @Override
-    public Optional<EpisodePageResponse> getAllEpisodes(final int page) throws IOException {
+    public Optional<EpisodePage> getAllEpisodes(final int page) throws IOException {
         RickAndMortyApiClientUtils.requirePositivePage(page);
         return Optional.ofNullable(read(
                 "/episode?" + RickAndMortyApiClientConstants.PARAM_PAGE + "=" + page,
-                EpisodePageResponse.class
+                EpisodePage.class
         ));
     }
 
@@ -165,11 +165,11 @@ public class RickAndMortyApiClientJavaNet implements RickAndMortyApiClient {
 
     // -------------------------------------------------------------------------------------------------------- locations
     @Override
-    public Optional<LocationPageResponse> getAllLocations(final int page) throws IOException {
+    public Optional<LocationPage> getAllLocations(final int page) throws IOException {
         RickAndMortyApiClientUtils.requirePositivePage(page);
         return Optional.ofNullable(read(
                 "/location?" + RickAndMortyApiClientConstants.PARAM_PAGE + "=" + page,
-                LocationPageResponse.class
+                LocationPage.class
         ));
     }
 

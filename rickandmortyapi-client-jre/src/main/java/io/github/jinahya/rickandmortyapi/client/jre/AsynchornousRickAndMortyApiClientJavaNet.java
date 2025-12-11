@@ -1,7 +1,7 @@
 package io.github.jinahya.rickandmortyapi.client.jre;
 
 import io.github.jinahya.rickandmortyapi.client.AsynchronousRickAndMortyApiClient;
-import io.github.jinahya.rickandmortyapi.client.type.CharacterPageResponse;
+import io.github.jinahya.rickandmortyapi.client.type.CharacterPage;
 import io.github.jinahya.rickandmortyapi.client.type.CharacterType;
 
 import java.io.IOException;
@@ -23,7 +23,7 @@ public class AsynchornousRickAndMortyApiClientJavaNet implements AsynchronousRic
 
     // -----------------------------------------------------------------------------------------------------------------
     @Override
-    public CompletableFuture<CharacterPageResponse> getAllCharacters(final int page) {
+    public CompletableFuture<CharacterPage> getAllCharacters(final int page) {
         return CompletableFuture.supplyAsync(() -> {
             try {
                 return synchronous.getAllCharacters(page).orElse(null);

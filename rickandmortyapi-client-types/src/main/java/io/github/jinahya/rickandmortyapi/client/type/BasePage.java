@@ -26,7 +26,7 @@ import java.util.List;
         "java:S101", // Class names should comply with a naming convention
         "java:S119"  // Type parameter names should comply with a naming convention
 })
-public class BasePageResponse<RESULT> extends _BaseResponse {
+public class BasePage<RESULT> extends _BaseResponse {
 
     @JsonbVisibility(___NonPrivateVisibilityStrategy.class)
     @Setter(AccessLevel.PROTECTED)

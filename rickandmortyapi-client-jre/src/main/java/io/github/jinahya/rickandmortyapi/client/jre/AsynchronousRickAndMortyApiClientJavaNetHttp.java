@@ -1,7 +1,7 @@
 package io.github.jinahya.rickandmortyapi.client.jre;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.jinahya.rickandmortyapi.client.type.CharacterPageResponse;
+import io.github.jinahya.rickandmortyapi.client.type.CharacterPage;
 import io.github.jinahya.rickandmortyapi.client.type.CharacterType;
 import jakarta.validation.constraints.NotNull;
 
@@ -78,13 +78,13 @@ public class AsynchronousRickAndMortyApiClientJavaNetHttp { //implements Asynchr
 
     // ---------------------------------------------------------------------------------------------------- character(s)
 //    @Override
-    public CompletableFuture<CharacterPageResponse> getAllCharacters(final int page) throws IOException {
+    public CompletableFuture<CharacterPage> getAllCharacters(final int page) throws IOException {
         final var request = HttpRequest.newBuilder()
                 .GET()
                 .uri(uri("/character?page=" + page))
                 .build();
         return httpClient
-                .sendAsync(request, newJsonBodyHandler(objectMapper, CharacterPageResponse.class))
+                .sendAsync(request, newJsonBodyHandler(objectMapper, CharacterPage.class))
                 .thenApply(HttpResponse::body)
                 .thenApply(Supplier::get);
     }

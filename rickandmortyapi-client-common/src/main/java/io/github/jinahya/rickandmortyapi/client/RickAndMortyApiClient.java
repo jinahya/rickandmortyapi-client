@@ -1,10 +1,10 @@
 package io.github.jinahya.rickandmortyapi.client;
 
-import io.github.jinahya.rickandmortyapi.client.type.CharacterPageResponse;
+import io.github.jinahya.rickandmortyapi.client.type.CharacterPage;
 import io.github.jinahya.rickandmortyapi.client.type.CharacterType;
-import io.github.jinahya.rickandmortyapi.client.type.EpisodePageResponse;
+import io.github.jinahya.rickandmortyapi.client.type.EpisodePage;
 import io.github.jinahya.rickandmortyapi.client.type.EpisodeType;
-import io.github.jinahya.rickandmortyapi.client.type.LocationPageResponse;
+import io.github.jinahya.rickandmortyapi.client.type.LocationPage;
 import io.github.jinahya.rickandmortyapi.client.type.LocationType;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
@@ -31,7 +31,7 @@ public interface RickAndMortyApiClient {
      * @throws IOException              if an I/O error occurs.
      * @see <a href="https://rickandmortyapi.com/documentation/#get-all-characters">Get all characters</a>
      */
-    Optional<CharacterPageResponse> getAllCharacters(int page) throws IOException;
+    Optional<CharacterPage> getAllCharacters(int page) throws IOException;
 
     /**
      * Reads all characters.
@@ -63,7 +63,7 @@ public interface RickAndMortyApiClient {
     // --------------------------------------------------------------------------------------------------------- episode
     @Valid
     @NotNull
-    Optional<EpisodePageResponse> getAllEpisodes(@Positive int page) throws IOException;
+    Optional<EpisodePage> getAllEpisodes(@Positive int page) throws IOException;
 
     @NotNull
     default List<@Valid @NotNull EpisodeType> getAllEpisodes() {
@@ -92,7 +92,7 @@ public interface RickAndMortyApiClient {
     // -------------------------------------------------------------------------------------------------------- location
     @Valid
     @NotNull
-    Optional<LocationPageResponse> getAllLocations(@Positive int page) throws IOException;
+    Optional<LocationPage> getAllLocations(@Positive int page) throws IOException;
 
     @NotNull
     default List<@Valid @NotNull LocationType> getAllLocations() {
