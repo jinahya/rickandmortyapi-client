@@ -76,7 +76,7 @@ public class RickAndMortyApiClientJavaNetHttp implements RickAndMortyApiClient {
     // ------------------------------------------------------------------------------------------------------ /character
     @Override
     public Optional<CharacterPage> getAllCharacters(final int page) throws IOException {
-        RickAndMortyApiClientUtils.requirePositivePage(page);
+        RickAndMortyApiClientUtils.requireValidPage(page);
         return read(
                 "/character?page=" + page,
                 CharacterPage.class
@@ -90,7 +90,7 @@ public class RickAndMortyApiClientJavaNetHttp implements RickAndMortyApiClient {
 
     @Override
     public List<CharacterType> getCharacters(final int... ids) throws IOException {
-        RickAndMortyApiClientUtils.requireNonEmptyIds(ids);
+        RickAndMortyApiClientUtils.requireValidIds(ids);
         return read(
                 "/character/" + RickAndMortyApiClientUtils.joinIds(ids),
                 new TypeReference<>() {
@@ -100,7 +100,7 @@ public class RickAndMortyApiClientJavaNetHttp implements RickAndMortyApiClient {
 
     @Override
     public Optional<CharacterType> getCharacter(final int id) throws IOException {
-        RickAndMortyApiClientUtils.requirePositiveId(id);
+        RickAndMortyApiClientUtils.requireValidId(id);
         return read(
                 "/character/" + id,
                 CharacterType.class
@@ -110,7 +110,7 @@ public class RickAndMortyApiClientJavaNetHttp implements RickAndMortyApiClient {
     // -------------------------------------------------------------------------------------------------------- /episode
     @Override
     public Optional<EpisodePage> getAllEpisodes(final int page) throws IOException {
-        RickAndMortyApiClientUtils.requirePositivePage(page);
+        RickAndMortyApiClientUtils.requireValidPage(page);
         return read(
                 "/episode?page=" + page,
                 EpisodePage.class
@@ -124,7 +124,7 @@ public class RickAndMortyApiClientJavaNetHttp implements RickAndMortyApiClient {
 
     @Override
     public List<EpisodeType> getEpisodes(final int... ids) throws IOException {
-        RickAndMortyApiClientUtils.requireNonEmptyIds(ids);
+        RickAndMortyApiClientUtils.requireValidIds(ids);
         return read(
                 "/episode/" + RickAndMortyApiClientUtils.joinIds(ids),
                 new TypeReference<>() {
@@ -134,7 +134,7 @@ public class RickAndMortyApiClientJavaNetHttp implements RickAndMortyApiClient {
 
     @Override
     public Optional<EpisodeType> getEpisode(final int id) throws IOException {
-        RickAndMortyApiClientUtils.requirePositiveId(id);
+        RickAndMortyApiClientUtils.requireValidId(id);
         return read(
                 "/episode/" + id,
                 EpisodeType.class
@@ -144,7 +144,7 @@ public class RickAndMortyApiClientJavaNetHttp implements RickAndMortyApiClient {
     // ------------------------------------------------------------------------------------------------------- /location
     @Override
     public Optional<LocationPage> getAllLocations(final int page) throws IOException {
-        RickAndMortyApiClientUtils.requirePositivePage(page);
+        RickAndMortyApiClientUtils.requireValidPage(page);
         return read(
                 "/location?page=" + page,
                 LocationPage.class
@@ -158,7 +158,7 @@ public class RickAndMortyApiClientJavaNetHttp implements RickAndMortyApiClient {
 
     @Override
     public List<LocationType> getLocations(final int... ids) throws IOException {
-        RickAndMortyApiClientUtils.requireNonEmptyIds(ids);
+        RickAndMortyApiClientUtils.requireValidIds(ids);
         return read(
                 "/location/" + RickAndMortyApiClientUtils.joinIds(ids),
                 new TypeReference<>() {
@@ -168,7 +168,7 @@ public class RickAndMortyApiClientJavaNetHttp implements RickAndMortyApiClient {
 
     @Override
     public Optional<LocationType> getLocation(final int id) throws IOException {
-        RickAndMortyApiClientUtils.requirePositiveId(id);
+        RickAndMortyApiClientUtils.requireValidId(id);
         return read(
                 "/location/" + id,
                 LocationType.class

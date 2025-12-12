@@ -10,12 +10,16 @@ import java.util.concurrent.Executor;
 
 final class AsynchronousRickAndMortyApiClientUtils {
 
+    static Executor requireNonNullExecutor(final Executor executor) {
+        return Objects.requireNonNull(executor, "executor is null");
+    }
+
     // ------------------------------------------------------------------------------------------------------- character
     private static CompletableFuture<List<CharacterType>> getAllCharacters(
             final Executor executor, final AsynchronousRickAndMortyApiClient client, final int page,
             final List<CharacterType> list) {
         Objects.requireNonNull(executor, "executor is null");
-        return client.getAllCharacters(executor, page).thenComposeAsync(r -> {
+        return client.getAllCharacters(page, executor).thenComposeAsync(r -> {
             if (r == null) {
                 return CompletableFuture.completedFuture(list);
             }

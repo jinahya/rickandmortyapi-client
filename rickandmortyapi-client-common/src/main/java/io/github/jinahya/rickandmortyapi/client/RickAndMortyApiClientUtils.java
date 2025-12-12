@@ -6,14 +6,16 @@ import java.util.stream.IntStream;
 
 public final class RickAndMortyApiClientUtils {
 
-    public static int requirePositivePage(final int page) {
+    // -----------------------------------------------------------------------------------------------------------------
+    public static int requireValidPage(final int page) {
         if (page < 1) {
             throw new IllegalArgumentException("page is not positive: " + page);
         }
         return page;
     }
 
-    public static int[] requireNonEmptyIds(final int... ids) {
+    // -----------------------------------------------------------------------------------------------------------------
+    public static int[] requireValidIds(final int... ids) {
         if (Objects.requireNonNull(ids, "ids is null").length == 0) {
             throw new IllegalArgumentException("empty ids");
         }
@@ -21,12 +23,13 @@ public final class RickAndMortyApiClientUtils {
     }
 
     public static String joinIds(final int... ids) {
-        assert ids != null;
-        assert ids.length > 0;
-        return IntStream.of(ids).mapToObj(String::valueOf).collect(Collectors.joining(","));
+        return IntStream.of(ids)
+                .mapToObj(String::valueOf)
+                .collect(Collectors.joining(","));
     }
 
-    public static int requirePositiveId(final int id) {
+    // -----------------------------------------------------------------------------------------------------------------
+    public static int requireValidId(final int id) {
         if (id < 1) {
             throw new IllegalArgumentException("id is not positive: " + id);
         }

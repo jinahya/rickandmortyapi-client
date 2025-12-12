@@ -6,6 +6,7 @@ import io.github.jinahya.rickandmortyapi.client.AsynchronousRickAndMortyApiClien
 import io.github.jinahya.rickandmortyapi.client.RickAndMortyApiClientUtils;
 import io.github.jinahya.rickandmortyapi.client.type.CharacterPage;
 import io.github.jinahya.rickandmortyapi.client.type.CharacterType;
+import jakarta.validation.constraints.NotNull;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -18,6 +19,10 @@ import java.util.concurrent.Executor;
 import java.util.function.Supplier;
 
 public class AsynchronousRickAndMortyApiClientJavaNetHttp implements AsynchronousRickAndMortyApiClient {
+
+    private static Executor requireNonNullExecutor(final Executor executor) {
+        return Objects.requireNonNull(executor, "executor is null");
+    }
 
     // -----------------------------------------------------------------------------------------------------------------
     public AsynchronousRickAndMortyApiClientJavaNetHttp(final RickAndMortyApiClientConfigurationJre configuration) {
@@ -37,29 +42,20 @@ public class AsynchronousRickAndMortyApiClientJavaNetHttp implements Asynchronou
 
     // ------------------------------------------------------------------------------------------------------ /character
     @Override
-    public CompletableFuture<CharacterPage> getAllCharacters(final Executor executor, final int page) {
-        RickAndMortyApiClientUtils.requirePositivePage(page);
+    public CompletableFuture<Supplier<CharacterPage>> getAllCharactersDeferred(final int page) {
+        RickAndMortyApiClientUtils.requireValidPage(page);
         final var request = HttpRequest.newBuilder()
                 .GET()
                 .uri(uri("/character?page=" + page))
                 .build();
         return httpClient
                 .sendAsync(request, _JavaNetHttpUtils.newJsonBodyHandlerDeferred(objectMapper, CharacterPage.class))
-                .thenApply(HttpResponse::body)
-                .thenApplyAsync(Supplier::get, executor);
+                .thenApply(HttpResponse::body);
     }
 
     @Override
-    public CompletableFuture<List<CharacterType>> getAllCharacters(final Executor executor) {
-        Objects.requireNonNull(executor, "executor is null");
-        return AsynchronousRickAndMortyApiClient.super.getAllCharacters(executor);
-    }
-
-    @Override
-    public CompletableFuture<List<CharacterType>> getCharacters(final Executor executor,
-                                                                final int... ids) {
-        Objects.requireNonNull(executor, "executor is null");
-        RickAndMortyApiClientUtils.requireNonEmptyIds(ids);
+    public CompletableFuture<Supplier<List<CharacterType>>> getCharactersDeferred(@NotNull int... ids) {
+        RickAndMortyApiClientUtils.requireValidIds(ids);
         final var request = HttpRequest.newBuilder()
                 .GET()
                 .uri(uri("/character/" + RickAndMortyApiClientUtils.joinIds(ids)))
@@ -73,21 +69,19 @@ public class AsynchronousRickAndMortyApiClientJavaNetHttp implements Asynchronou
                                 }
                         )
                 )
-                .thenApply(HttpResponse::body)
-                .thenApplyAsync(Supplier::get, executor);
+                .thenApply(HttpResponse::body);
     }
 
     @Override
-    public CompletableFuture<CharacterType> getCharacter(final Executor executor, final int id) {
-        RickAndMortyApiClientUtils.requirePositiveId(id);
+    public CompletableFuture<Supplier<CharacterType>> getCharacterDeferred(final int id) {
+        RickAndMortyApiClientUtils.requireValidId(id);
         final var request = HttpRequest.newBuilder()
                 .GET()
                 .uri(uri("/character/" + id))
                 .build();
         return httpClient
                 .sendAsync(request, _JavaNetHttpUtils.newJsonBodyHandlerDeferred(objectMapper, CharacterType.class))
-                .thenApply(HttpResponse::body)
-                .thenApplyAsync(Supplier::get, executor);
+                .thenApply(HttpResponse::body);
     }
 
     // -----------------------------------------------------------------------------------------------------------------

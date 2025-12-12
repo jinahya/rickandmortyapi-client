@@ -9,21 +9,31 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.function.Supplier;
 
 public interface AsynchronousRickAndMortyApiClient {
 
     // ------------------------------------------------------------------------------------------------ /character?page=
     @NotNull
-    CompletableFuture<CharacterPage> getAllCharacters(@NotNull Executor executor, @Positive int page);
+    CompletableFuture<Supplier<CharacterPage>> getAllCharactersDeferred(@Positive int page);
+
+    @NotNull
+    default CompletableFuture<CharacterPage> getAllCharacters(@Positive final int page,
+                                                              @NotNull final Executor executor) {
+        AsynchronousRickAndMortyApiClientUtils.requireNonNullExecutor(executor);
+        return getAllCharactersDeferred(page)
+                .thenApplyAsync(Supplier::get, executor);
+    }
 
     default CompletableFuture<CharacterPage> getAllCharacters(@Positive final int page) {
         try (var executor = Executors.newSingleThreadExecutor()) {
-            return getAllCharacters(executor, page);
+            return getAllCharacters(page, executor);
         }
     }
 
     @NotNull
-    default CompletableFuture<List<CharacterType>> getAllCharacters(@NotNull Executor executor) {
+    default CompletableFuture<List<CharacterType>> getAllCharacters(@NotNull final Executor executor) {
+        AsynchronousRickAndMortyApiClientUtils.requireNonNullExecutor(executor);
         return AsynchronousRickAndMortyApiClientUtils.getAllCharacters(executor, this);
     }
 
@@ -36,20 +46,38 @@ public interface AsynchronousRickAndMortyApiClient {
 
     // ------------------------------------------------------------------------------------------------ /character/1,2,3
     @NotNull
-    CompletableFuture<List<CharacterType>> getCharacters(@NotNull Executor executor, @NotNull int... ids);
+    CompletableFuture<Supplier<List<CharacterType>>> getCharactersDeferred(@NotNull int... ids);
 
-    default CompletableFuture<List<CharacterType>> getCharacters(@NotNull int... ids) {
+    @NotNull
+    default CompletableFuture<List<CharacterType>> getCharacters(@NotNull final int[] ids,
+                                                                 @NotNull final Executor executor) {
+        RickAndMortyApiClientUtils.requireValidIds(ids);
+        AsynchronousRickAndMortyApiClientUtils.requireNonNullExecutor(executor);
+        return getCharactersDeferred(ids)
+                .thenApplyAsync(Supplier::get, executor);
+    }
+
+    default CompletableFuture<List<CharacterType>> getCharacters(@NotNull final int... ids) {
+        RickAndMortyApiClientUtils.requireValidIds(ids);
         try (var executor = Executors.newSingleThreadExecutor()) {
-            return getCharacters(executor, ids);
+            return getCharacters(ids, executor);
         }
     }
 
     // ---------------------------------------------------------------------------------------------------- /character/1
-    CompletableFuture<CharacterType> getCharacter(@NotNull Executor executor, @Positive int id);
+    CompletableFuture<Supplier<CharacterType>> getCharacterDeferred(@Positive final int id);
 
-    default CompletableFuture<CharacterType> getCharacter(@Positive int id) {
+    default CompletableFuture<CharacterType> getCharacter(@Positive final int id, @NotNull final Executor executor) {
+        RickAndMortyApiClientUtils.requireValidId(id);
+        AsynchronousRickAndMortyApiClientUtils.requireNonNullExecutor(executor);
+        return getCharacterDeferred(id)
+                .thenApplyAsync(Supplier::get, executor);
+    }
+
+    default CompletableFuture<CharacterType> getCharacter(@Positive final int id) {
+        RickAndMortyApiClientUtils.requireValidId(id);
         try (var executor = Executors.newSingleThreadExecutor()) {
-            return getCharacter(executor, id);
+            return getCharacter(id, executor);
         }
     }
 }

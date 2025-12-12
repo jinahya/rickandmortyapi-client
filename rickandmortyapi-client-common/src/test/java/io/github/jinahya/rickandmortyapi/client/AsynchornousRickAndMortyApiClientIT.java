@@ -42,7 +42,7 @@ public abstract class AsynchornousRickAndMortyApiClientIT<CLIENT extends Asynchr
             // --------------------------------------------------------------------------------------------------- given
             final var instance = newClientInstance();
             // ---------------------------------------------------------------------------------------------------- when
-            final var result = instance.getAllCharacters(EXECUTOR, page);
+            final var result = instance.getAllCharacters(page, EXECUTOR);
             // ---------------------------------------------------------------------------------------------------- then
             assertThat(result)
                     .succeedsWithin(Duration.ofSeconds(20L))
@@ -56,7 +56,7 @@ public abstract class AsynchornousRickAndMortyApiClientIT<CLIENT extends Asynchr
         void _Empty_BeyondLastPage() {
             final var page = RickAndMortyApiClientTestConstants.CHARACTERS_PAGE_COUNT + 1;
             final var instance = newClientInstance();
-            final var result = instance.getAllCharacters(EXECUTOR, page);
+            final var result = instance.getAllCharacters(page, EXECUTOR);
             assertThat(result)
                     .succeedsWithin(Duration.ofSeconds(20L))
                     .satisfies(v -> {
@@ -100,7 +100,7 @@ public abstract class AsynchornousRickAndMortyApiClientIT<CLIENT extends Asynchr
             final int[] ids = null;
             // --------------------------------------------------------------------------------------------- when / then
             assertThatThrownBy(() -> {
-                instance.getCharacters(EXECUTOR, ids);
+                instance.getCharacters(ids, EXECUTOR);
             }).isInstanceOf(NullPointerException.class);
         }
 
@@ -112,7 +112,7 @@ public abstract class AsynchornousRickAndMortyApiClientIT<CLIENT extends Asynchr
             final int[] ids = new int[0];
             // --------------------------------------------------------------------------------------------- when / then
             assertThatThrownBy(() -> {
-                instance.getCharacters(EXECUTOR, ids);
+                instance.getCharacters(ids, EXECUTOR);
             }).isInstanceOf(IllegalArgumentException.class);
         }
 
@@ -122,7 +122,7 @@ public abstract class AsynchornousRickAndMortyApiClientIT<CLIENT extends Asynchr
             final var instance = newClientInstance();
             final var ids = new int[]{1, 2, 3};
             // ---------------------------------------------------------------------------------------------------- when
-            final var result = instance.getCharacters(EXECUTOR, ids);
+            final var result = instance.getCharacters(ids, EXECUTOR);
             // ---------------------------------------------------------------------------------------------------- then
             assertThat(result)
                     .succeedsWithin(Duration.ofSeconds(20L))
@@ -148,7 +148,7 @@ public abstract class AsynchornousRickAndMortyApiClientIT<CLIENT extends Asynchr
             final var id = 0;
             final var instance = newClientInstance();
             assertThatThrownBy(() -> {
-                instance.getCharacter(EXECUTOR, id);
+                instance.getCharacter(id, EXECUTOR);
             }).isInstanceOf(IllegalArgumentException.class);
         }
 
@@ -158,7 +158,7 @@ public abstract class AsynchornousRickAndMortyApiClientIT<CLIENT extends Asynchr
             final var id = ThreadLocalRandom.current().nextInt() | Integer.MIN_VALUE;
             final var instance = newClientInstance();
             assertThatThrownBy(() -> {
-                instance.getCharacter(EXECUTOR, id);
+                instance.getCharacter(id, EXECUTOR);
             }).isInstanceOf(IllegalArgumentException.class);
         }
 
@@ -169,7 +169,7 @@ public abstract class AsynchornousRickAndMortyApiClientIT<CLIENT extends Asynchr
             final var id = 1048576;
             final var instance = newClientInstance();
             // ---------------------------------------------------------------------------------------------------- when
-            final var result = instance.getCharacter(EXECUTOR, id);
+            final var result = instance.getCharacter(id, EXECUTOR);
             // ---------------------------------------------------------------------------------------------------- then
             assertThat(result).succeedsWithin(Duration.ofSeconds(20L)).satisfies(v -> {
                 assertThat(v).isNull();
@@ -183,7 +183,7 @@ public abstract class AsynchornousRickAndMortyApiClientIT<CLIENT extends Asynchr
             final var instance = newClientInstance();
             final var id = 1;
             // ---------------------------------------------------------------------------------------------------- when
-            final var result = instance.getCharacter(EXECUTOR, id);
+            final var result = instance.getCharacter(id, EXECUTOR);
             // ---------------------------------------------------------------------------------------------------- then
             assertThat(result)
                     .succeedsWithin(Duration.ofSeconds(20L))

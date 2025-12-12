@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
+import java.util.function.Supplier;
 
 public class AsynchronousRickAndMortyApiClientJavaNet implements AsynchronousRickAndMortyApiClient {
 
@@ -25,10 +25,9 @@ public class AsynchronousRickAndMortyApiClientJavaNet implements AsynchronousRic
 
     // ------------------------------------------------------------------------------------------------------ characters
     @Override
-    public CompletableFuture<CharacterPage> getAllCharacters(final Executor executor, final int page) {
-        Objects.requireNonNull(executor, "executor is null");
-        RickAndMortyApiClientUtils.requirePositivePage(page);
-        return CompletableFuture.supplyAsync(() -> {
+    public CompletableFuture<Supplier<CharacterPage>> getAllCharactersDeferred(final int page) {
+        RickAndMortyApiClientUtils.requireValidPage(page);
+        return CompletableFuture.supplyAsync(() -> () -> {
             try {
                 return synchronous.getAllCharacters(page).orElse(null);
             } catch (final IOException ioe) {
@@ -38,16 +37,9 @@ public class AsynchronousRickAndMortyApiClientJavaNet implements AsynchronousRic
     }
 
     @Override
-    public CompletableFuture<List<CharacterType>> getAllCharacters(final Executor executor) {
-        Objects.requireNonNull(executor, "executor is null");
-        return AsynchronousRickAndMortyApiClient.super.getAllCharacters(executor);
-    }
-
-    @Override
-    public CompletableFuture<List<CharacterType>> getCharacters(final Executor executor, final int... ids) {
-        Objects.requireNonNull(executor, "executor is null");
-        RickAndMortyApiClientUtils.requireNonEmptyIds(ids);
-        return CompletableFuture.supplyAsync(() -> {
+    public CompletableFuture<Supplier<List<CharacterType>>> getCharactersDeferred(final int[] ids) {
+        RickAndMortyApiClientUtils.requireValidIds(ids);
+        return CompletableFuture.supplyAsync(() -> () -> {
             try {
                 return synchronous.getCharacters(ids);
             } catch (final IOException ioe) {
@@ -57,10 +49,9 @@ public class AsynchronousRickAndMortyApiClientJavaNet implements AsynchronousRic
     }
 
     @Override
-    public CompletableFuture<CharacterType> getCharacter(final Executor executor, final int id) {
-        Objects.requireNonNull(executor, "executor is null");
-        RickAndMortyApiClientUtils.requirePositiveId(id);
-        return CompletableFuture.supplyAsync(() -> {
+    public CompletableFuture<Supplier<CharacterType>> getCharacterDeferred(final int id) {
+        RickAndMortyApiClientUtils.requireValidId(id);
+        return CompletableFuture.supplyAsync(() -> () -> {
             try {
                 return synchronous.getCharacter(id).orElse(null);
             } catch (final IOException ioe) {

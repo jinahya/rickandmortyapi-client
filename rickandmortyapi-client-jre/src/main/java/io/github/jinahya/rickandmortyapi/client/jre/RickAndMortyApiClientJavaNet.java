@@ -108,7 +108,7 @@ public class RickAndMortyApiClientJavaNet implements RickAndMortyApiClient {
     // ------------------------------------------------------------------------------------------------------ characters
     @Override
     public Optional<CharacterPage> getAllCharacters(final int page) throws IOException {
-        RickAndMortyApiClientUtils.requirePositivePage(page);
+        RickAndMortyApiClientUtils.requireValidPage(page);
         return Optional.ofNullable(read(
                 "/character?" + RickAndMortyApiClientConstants.PARAM_PAGE + "=" + page,
                 CharacterPage.class
@@ -117,7 +117,7 @@ public class RickAndMortyApiClientJavaNet implements RickAndMortyApiClient {
 
     @Override
     public List<CharacterType> getCharacters(final int... ids) throws IOException {
-        RickAndMortyApiClientUtils.requireNonEmptyIds(ids);
+        RickAndMortyApiClientUtils.requireValidIds(ids);
         return read(
                 "/character/" + IntStream.of(ids).distinct().mapToObj(String::valueOf).collect(Collectors.joining(",")),
                 new TypeReference<>() {
@@ -127,7 +127,7 @@ public class RickAndMortyApiClientJavaNet implements RickAndMortyApiClient {
 
     @Override
     public Optional<CharacterType> getCharacter(final int id) throws IOException {
-        RickAndMortyApiClientUtils.requirePositiveId(id);
+        RickAndMortyApiClientUtils.requireValidId(id);
         return Optional.ofNullable(read(
                 "/character/" + id,
                 CharacterType.class
@@ -137,7 +137,7 @@ public class RickAndMortyApiClientJavaNet implements RickAndMortyApiClient {
     // -------------------------------------------------------------------------------------------------------- episodes
     @Override
     public Optional<EpisodePage> getAllEpisodes(final int page) throws IOException {
-        RickAndMortyApiClientUtils.requirePositivePage(page);
+        RickAndMortyApiClientUtils.requireValidPage(page);
         return Optional.ofNullable(read(
                 "/episode?" + RickAndMortyApiClientConstants.PARAM_PAGE + "=" + page,
                 EpisodePage.class
@@ -146,7 +146,7 @@ public class RickAndMortyApiClientJavaNet implements RickAndMortyApiClient {
 
     @Override
     public List<EpisodeType> getEpisodes(final int... ids) throws IOException {
-        RickAndMortyApiClientUtils.requireNonEmptyIds(ids);
+        RickAndMortyApiClientUtils.requireValidIds(ids);
         return read(
                 "/episode/" + IntStream.of(ids).distinct().mapToObj(String::valueOf).collect(Collectors.joining(",")),
                 new TypeReference<>() {
@@ -156,7 +156,7 @@ public class RickAndMortyApiClientJavaNet implements RickAndMortyApiClient {
 
     @Override
     public Optional<EpisodeType> getEpisode(final int id) throws IOException {
-        RickAndMortyApiClientUtils.requirePositiveId(id);
+        RickAndMortyApiClientUtils.requireValidId(id);
         return Optional.ofNullable(read(
                 "/episode/" + id,
                 EpisodeType.class
@@ -166,7 +166,7 @@ public class RickAndMortyApiClientJavaNet implements RickAndMortyApiClient {
     // -------------------------------------------------------------------------------------------------------- locations
     @Override
     public Optional<LocationPage> getAllLocations(final int page) throws IOException {
-        RickAndMortyApiClientUtils.requirePositivePage(page);
+        RickAndMortyApiClientUtils.requireValidPage(page);
         return Optional.ofNullable(read(
                 "/location?" + RickAndMortyApiClientConstants.PARAM_PAGE + "=" + page,
                 LocationPage.class
@@ -175,7 +175,7 @@ public class RickAndMortyApiClientJavaNet implements RickAndMortyApiClient {
 
     @Override
     public List<LocationType> getLocations(final int... ids) throws IOException {
-        RickAndMortyApiClientUtils.requireNonEmptyIds(ids);
+        RickAndMortyApiClientUtils.requireValidIds(ids);
         return read(
                 "/location/" + IntStream.of(ids).distinct().mapToObj(String::valueOf).collect(Collectors.joining(",")),
                 new TypeReference<>() {
@@ -185,7 +185,7 @@ public class RickAndMortyApiClientJavaNet implements RickAndMortyApiClient {
 
     @Override
     public Optional<LocationType> getLocation(final int id) throws IOException {
-        RickAndMortyApiClientUtils.requirePositiveId(id);
+        RickAndMortyApiClientUtils.requireValidId(id);
         return Optional.ofNullable(read(
                 "/location/" + id,
                 LocationType.class
