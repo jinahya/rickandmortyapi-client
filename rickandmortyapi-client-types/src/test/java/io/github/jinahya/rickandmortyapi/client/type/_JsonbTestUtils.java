@@ -16,7 +16,8 @@ final class _JsonbTestUtils {
         }
     }
 
-    static <T> T readValueFromResource(final Class<?> clazz, final String name, final Class<T> type) throws Exception {
+    static <T> T readValueFromResource(final Class<?> clazz, final String name, final Class<T> type)
+            throws Exception {
         Objects.requireNonNull(type, "type is null");
         return __BaseTypeTestUtils.applyResourceStream(
                 clazz,
@@ -31,36 +32,21 @@ final class _JsonbTestUtils {
         );
     }
 
-    static <T> T readValueFromResource(final Class<?> clazz, final String name, final Type type) throws Exception {
-        Objects.requireNonNull(type, "type is null");
+    static <T> T readValueFromResource(final Class<?> clazz, final String name, final Type runtimeType)
+            throws Exception {
+        Objects.requireNonNull(runtimeType, "runtimeType is null");
         return __BaseTypeTestUtils.applyResourceStream(
                 clazz,
                 name,
                 s -> {
                     try {
-                        return applyJsonb(j -> j.fromJson(s, type));
+                        return applyJsonb(j -> j.fromJson(s, runtimeType));
                     } catch (final Exception e) {
                         throw new RuntimeException(e);
                     }
                 }
         );
     }
-
-//    static <T> T readValueFromResource(final Class<?> clazz, final String name, final jakarta.json.bind.TypeRef<T> type)
-//            throws Exception {
-//        Objects.requireNonNull(type, "type is null");
-//        return __BaseTypeTestUtils.applyResourceStream(
-//                clazz,
-//                name,
-//                s -> {
-//                    try {
-//                        return applyJsonb(j -> j.fromJson(s, type));
-//                    } catch (final Exception e) {
-//                        throw new RuntimeException(e);
-//                    }
-//                }
-//        );
-//    }
 
     // -----------------------------------------------------------------------------------------------------------------
     private _JsonbTestUtils() {

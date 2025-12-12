@@ -2,28 +2,77 @@ package io.github.jinahya.rickandmortyapi.client.type;
 
 import jakarta.json.bind.annotation.JsonbVisibility;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Positive;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.io.Serial;
+import java.time.Instant;
+import java.util.Comparator;
+import java.util.Objects;
 
 @JsonbVisibility(___NonPrivateVisibilityStrategy.class)
 @Setter(AccessLevel.PROTECTED)
 @Getter
 @EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
 public abstract class BaseSingularType extends __BaseType {
 
     @Serial
     private static final long serialVersionUID = -6172731908696246757L;
 
     // -----------------------------------------------------------------------------------------------------------------
+    public static final String JSON_NAME_ID = "id";
+
+    // -----------------------------------------------------------------------------------------------------------------
+    public static final String JSON_NAME_NAME = "name";
+
+    // -----------------------------------------------------------------------------------------------------------------
+    public static final String JSON_NAME_URL = "url";
+
+    // -----------------------------------------------------------------------------------------------------------------
+    public static final String JSON_NAME_CREATED = "created";
+
+    // -----------------------------------------------------------------------------------------------------------------
+
+    /**
+     * A comparator compares {@link BaseSingularType#getId()} values.
+     */
+    public static final Comparator<BaseSingularType> COMPARING_ID = Comparator.comparingInt(BaseSingularType::getId);
+
+    // -----------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Creates a new instance.
+     */
     protected BaseSingularType() {
         super();
+    }
+
+    // ------------------------------------------------------------------------------------------------ java.lang.Object
+    @Override
+    public String toString() {
+        return super.toString() + '{' +
+                "id=" + id +
+                ",name=" + name +
+                ",url=" + url +
+                ",created=" + created +
+                '}';
+    }
+
+    @Override
+    public final boolean equals(final Object o) {
+        if (!(o instanceof BaseSingularType that)) {
+            return false;
+        }
+        return id == that.id;
+    }
+
+    @Override
+    public final int hashCode() {
+        return Objects.hashCode(id);
     }
 
     // -------------------------------------------------------------------------------------------------------------- id
@@ -35,8 +84,43 @@ public abstract class BaseSingularType extends __BaseType {
         this.id = id;
     }
 
+    // ------------------------------------------------------------------------------------------------------------ name
+    public String getName() {
+        return name;
+    }
+
+    void setName(final String name) {
+        this.name = name;
+    }
+
+    // ------------------------------------------------------------------------------------------------------------- url
+    public String getUrl() {
+        return url;
+    }
+
+    void setUrl(final String url) {
+        this.url = url;
+    }
+
+    // --------------------------------------------------------------------------------------------------------- created
+    public Instant getCreated() {
+        return created;
+    }
+
+    void setCreated(final Instant created) {
+        this.created = created;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
     @Positive
     @NotNull
     private int id;
+
+    private String name;
+
+    // -----------------------------------------------------------------------------------------------------------------
+    private String url;
+
+    @Past
+    private Instant created;
 }

@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 
 public class AsynchronousRickAndMortyApiClientJavaNet implements AsynchronousRickAndMortyApiClient {
 
@@ -24,7 +25,8 @@ public class AsynchronousRickAndMortyApiClientJavaNet implements AsynchronousRic
 
     // ------------------------------------------------------------------------------------------------------ characters
     @Override
-    public CompletableFuture<CharacterPage> getAllCharacters(final int page) {
+    public CompletableFuture<CharacterPage> getAllCharacters(final Executor executor, final int page) {
+        Objects.requireNonNull(executor, "executor is null");
         RickAndMortyApiClientUtils.requirePositivePage(page);
         return CompletableFuture.supplyAsync(() -> {
             try {
@@ -36,12 +38,14 @@ public class AsynchronousRickAndMortyApiClientJavaNet implements AsynchronousRic
     }
 
     @Override
-    public CompletableFuture<List<CharacterType>> getAllCharacters() {
-        return AsynchronousRickAndMortyApiClient.super.getAllCharacters();
+    public CompletableFuture<List<CharacterType>> getAllCharacters(final Executor executor) {
+        Objects.requireNonNull(executor, "executor is null");
+        return AsynchronousRickAndMortyApiClient.super.getAllCharacters(executor);
     }
 
     @Override
-    public CompletableFuture<List<CharacterType>> getCharacters(final int... ids) {
+    public CompletableFuture<List<CharacterType>> getCharacters(final Executor executor, final int... ids) {
+        Objects.requireNonNull(executor, "executor is null");
         RickAndMortyApiClientUtils.requireNonEmptyIds(ids);
         return CompletableFuture.supplyAsync(() -> {
             try {
@@ -53,7 +57,8 @@ public class AsynchronousRickAndMortyApiClientJavaNet implements AsynchronousRic
     }
 
     @Override
-    public CompletableFuture<CharacterType> getCharacter(final int id) {
+    public CompletableFuture<CharacterType> getCharacter(final Executor executor, final int id) {
+        Objects.requireNonNull(executor, "executor is null");
         RickAndMortyApiClientUtils.requirePositiveId(id);
         return CompletableFuture.supplyAsync(() -> {
             try {

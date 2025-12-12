@@ -7,7 +7,6 @@ import io.github.jinahya.rickandmortyapi.client.RickAndMortyApiClientUtils;
 import io.github.jinahya.rickandmortyapi.client.type.CharacterPage;
 import io.github.jinahya.rickandmortyapi.client.type.CharacterType;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -15,44 +14,10 @@ import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Function;
+import java.util.concurrent.Executor;
 import java.util.function.Supplier;
 
 public class AsynchronousRickAndMortyApiClientJavaNetHttp implements AsynchronousRickAndMortyApiClient {
-
-//    // -----------------------------------------------------------------------------------------------------------------
-//    private static final class InstanceHolder {
-//
-//        private static final RickAndMortyApiClientJavaNet INSTANCE = new RickAndMortyApiClientJavaNet();
-//
-//        private InstanceHolder() {
-//            throw new AssertionError("instantiation is not allowed");
-//        }
-//    }
-//
-//    public static RickAndMortyApiClientJavaNet getInstance() {
-//        return InstanceHolder.INSTANCE;
-//    }
-
-    private static <T> HttpResponse.BodyHandler<Supplier<T>> newJsonBodyHandler(final ObjectMapper objectMapper,
-                                                                                final Class<T> clazz) {
-        return ri -> {
-            {
-                final var statusCode = ri.statusCode();
-                ri.headers().map().forEach((n, l) -> {
-                });
-            }
-            return HttpResponse.BodySubscribers.mapping(
-                    HttpResponse.BodySubscribers.ofInputStream(),
-                    b -> () -> {
-                        try {
-                            return objectMapper.readValue(b, clazz);
-                        } catch (final IOException ioe) {
-                            throw new RuntimeException(ioe);
-                        }
-                    });
-        };
-    }
 
     // -----------------------------------------------------------------------------------------------------------------
     public AsynchronousRickAndMortyApiClientJavaNetHttp(final RickAndMortyApiClientConfigurationJre configuration) {
@@ -70,35 +35,30 @@ public class AsynchronousRickAndMortyApiClientJavaNetHttp implements Asynchronou
         return URI.create(configuration.getBaseUrl() + path);
     }
 
-    private <R> R applyHttpClient(final String path,
-                                  final Function<? super HttpClient.Builder, ? extends R> function) {
-        Objects.requireNonNull(function, "function is null");
-        final HttpClient.Builder builder = HttpClient.newBuilder();
-        final var built = builder.build();
-        return null;
-    }
-
-    // ---------------------------------------------------------------------------------------------------- character(s)
+    // ------------------------------------------------------------------------------------------------------ /character
     @Override
-    public CompletableFuture<CharacterPage> getAllCharacters(final int page) {
+    public CompletableFuture<CharacterPage> getAllCharacters(final Executor executor, final int page) {
         RickAndMortyApiClientUtils.requirePositivePage(page);
         final var request = HttpRequest.newBuilder()
                 .GET()
                 .uri(uri("/character?page=" + page))
                 .build();
         return httpClient
-                .sendAsync(request, _JavaNetHttpUtils.newJsonBodyHandler(objectMapper, CharacterPage.class))
+                .sendAsync(request, _JavaNetHttpUtils.newJsonBodyHandlerDeferred(objectMapper, CharacterPage.class))
                 .thenApply(HttpResponse::body)
-                .thenApply(Supplier::get);
+                .thenApplyAsync(Supplier::get, executor);
     }
 
     @Override
-    public CompletableFuture<List<CharacterType>> getAllCharacters() {
-        return AsynchronousRickAndMortyApiClient.super.getAllCharacters();
+    public CompletableFuture<List<CharacterType>> getAllCharacters(final Executor executor) {
+        Objects.requireNonNull(executor, "executor is null");
+        return AsynchronousRickAndMortyApiClient.super.getAllCharacters(executor);
     }
 
     @Override
-    public CompletableFuture<List<CharacterType>> getCharacters(final int... ids) {
+    public CompletableFuture<List<CharacterType>> getCharacters(final Executor executor,
+                                                                final int... ids) {
+        Objects.requireNonNull(executor, "executor is null");
         RickAndMortyApiClientUtils.requireNonEmptyIds(ids);
         final var request = HttpRequest.newBuilder()
                 .GET()
@@ -107,24 +67,27 @@ public class AsynchronousRickAndMortyApiClientJavaNetHttp implements Asynchronou
         return httpClient
                 .sendAsync(
                         request,
-                        _JavaNetHttpUtils.newJsonBodyHandler(objectMapper, new TypeReference<List<CharacterType>>() {
-                        })
+                        _JavaNetHttpUtils.newJsonBodyHandlerDeferred(
+                                objectMapper,
+                                new TypeReference<List<CharacterType>>() {
+                                }
+                        )
                 )
                 .thenApply(HttpResponse::body)
-                .thenApply(Supplier::get);
+                .thenApplyAsync(Supplier::get, executor);
     }
 
     @Override
-    public CompletableFuture<CharacterType> getCharacter(final int id) {
+    public CompletableFuture<CharacterType> getCharacter(final Executor executor, final int id) {
         RickAndMortyApiClientUtils.requirePositiveId(id);
         final var request = HttpRequest.newBuilder()
                 .GET()
                 .uri(uri("/character/" + id))
                 .build();
         return httpClient
-                .sendAsync(request, _JavaNetHttpUtils.newJsonBodyHandler(objectMapper, CharacterType.class))
+                .sendAsync(request, _JavaNetHttpUtils.newJsonBodyHandlerDeferred(objectMapper, CharacterType.class))
                 .thenApply(HttpResponse::body)
-                .thenApply(Supplier::get);
+                .thenApplyAsync(Supplier::get, executor);
     }
 
     // -----------------------------------------------------------------------------------------------------------------

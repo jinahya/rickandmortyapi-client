@@ -10,7 +10,8 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 final class __BaseTypeTestUtils<T extends __BaseType> {
 
     static <R> R applyResourceStream(Class<?> clazz, final String name,
-                                     final Function<? super InputStream, ? extends R> mapper) throws IOException {
+                                     final Function<? super InputStream, ? extends R> mapper)
+            throws IOException {
         if (clazz == null) {
             clazz = __BaseTypeTestUtils.class;
         }

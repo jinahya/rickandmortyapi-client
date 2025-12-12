@@ -14,15 +14,15 @@ final class _JacksonTestUtils {
         return mapper.apply(new ObjectMapper().findAndRegisterModules());
     }
 
-    static <T> T readValueFromResource(final Class<?> clazz, final String name, final Class<T> type)
+    static <T> T readValueFromResource(final Class<?> clazz, final String name, final Class<T> valueType)
             throws IOException {
-        Objects.requireNonNull(type, "type is null");
+        Objects.requireNonNull(valueType, "valueType is null");
         return __BaseTypeTestUtils.applyResourceStream(
                 clazz,
                 name,
                 s -> applyObjectMapper(om -> {
                     try {
-                        return om.readValue(s, type);
+                        return om.readValue(s, valueType);
                     } catch (final IOException ioe) {
                         throw new RuntimeException(ioe);
                     }

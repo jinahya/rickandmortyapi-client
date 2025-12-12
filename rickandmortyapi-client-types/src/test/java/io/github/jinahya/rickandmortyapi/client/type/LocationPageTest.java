@@ -14,38 +14,6 @@ class LocationPageTest extends BasePageTypeTest<LocationPage, LocationType> {
         super(LocationPage.class, LocationType.class);
     }
 
-//    // -----------------------------------------------------------------------------------------------------------------
-//    @DisplayName("location_.json")
-//    @Nested
-//    class _Test {
-//
-//        @Test
-//        void __Jackson() throws IOException {
-//            try (var resource = LocationResponse.class.getResourceAsStream("location_.json")) {
-//                final var value = _JacksonTestUtils.applyObjectMapper(om -> {
-//                    try {
-//                        return om.readValue(resource, LocationResponse.class);
-//                    } catch (final IOException ioe) {
-//                        throw new RuntimeException(ioe);
-//                    }
-//                });
-//                log.debug("value: {}", value);
-//            }
-//        }
-//
-//        @Test
-//        void __Jsonb() throws IOException {
-//            try (var resource = LocationResponse.class.getResourceAsStream("location_.json")) {
-//                final var value = _JsonbTestUtils.applyJsonb(j -> {
-//                    return j.fromJson(resource, LocationResponse.class);
-//                });
-//                log.debug("value: {}", value);
-//            } catch (final Exception e) {
-//                throw new RuntimeException(e);
-//            }
-//        }
-//    }
-
     // -----------------------------------------------------------------------------------------------------------------
     private static Stream<String> resources() {
         return Stream.of("location_page_1.json");

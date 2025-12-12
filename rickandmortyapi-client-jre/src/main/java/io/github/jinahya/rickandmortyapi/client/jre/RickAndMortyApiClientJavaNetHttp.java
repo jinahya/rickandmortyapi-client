@@ -12,64 +12,14 @@ import io.github.jinahya.rickandmortyapi.client.type.LocationPage;
 import io.github.jinahya.rickandmortyapi.client.type.LocationType;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 public class RickAndMortyApiClientJavaNetHttp implements RickAndMortyApiClient {
-
-    private static <T> HttpResponse.BodyHandler<T> newJsonBodyHandler(final ObjectMapper objectMapper,
-                                                                      final Class<T> clazz) {
-        return ri -> {
-            {
-                final var statusCode = ri.statusCode();
-                if (statusCode == HttpURLConnection.HTTP_NOT_FOUND) {
-                    @SuppressWarnings({"unchecked"}) final var unchecked =
-                            (HttpResponse.BodySubscriber<T>) HttpResponse.BodySubscribers.discarding();
-                    return unchecked;
-                }
-                if (statusCode != HttpURLConnection.HTTP_OK) {
-                    throw new RuntimeException("unexpected status code: " + statusCode);
-                }
-                ri.headers().map().forEach((n, l) -> {
-                });
-            }
-            return HttpResponse.BodySubscribers.mapping(
-                    HttpResponse.BodySubscribers.ofInputStream(),
-                    b -> {
-                        try {
-                            return objectMapper.readValue(b, clazz);
-                        } catch (final IOException ioe) {
-                            throw new RuntimeException(ioe);
-                        }
-                    });
-        };
-    }
-
-    private static <T> HttpResponse.BodyHandler<T> newJsonBodyHandler(final ObjectMapper objectMapper,
-                                                                      final TypeReference<T> type) {
-        return ri -> {
-            {
-                final var statusCode = ri.statusCode();
-                ri.headers().map().forEach((n, l) -> {
-                });
-            }
-            return HttpResponse.BodySubscribers.mapping(
-                    HttpResponse.BodySubscribers.ofInputStream(),
-                    b -> {
-                        try {
-                            return objectMapper.readValue(b, type);
-                        } catch (final IOException ioe) {
-                            throw new RuntimeException(ioe);
-                        }
-                    });
-        };
-    }
 
     // -----------------------------------------------------------------------------------------------------------------
     public RickAndMortyApiClientJavaNetHttp(final RickAndMortyApiClientConfigurationJre configuration) {
@@ -98,15 +48,8 @@ public class RickAndMortyApiClientJavaNetHttp implements RickAndMortyApiClient {
                             .build(),
                     _JavaNetHttpUtils.newJsonBodyHandler(objectMapper, type)
             );
-            final var statusCode = response.statusCode();
-            if (statusCode == HttpURLConnection.HTTP_NOT_FOUND) {
-                return Optional.empty();
-            }
-            if (statusCode != HttpURLConnection.HTTP_OK) {
-                throw new IOException("unexpected response code: " + statusCode);
-            }
-            final T body = response.body().get();
-            return Optional.of(body);
+            final T body = response.body();
+            return Optional.ofNullable(body);
         } catch (final InterruptedException ie) {
             Thread.currentThread().interrupt();
             throw new RuntimeException("interrupted while reading " + path, ie);
@@ -123,22 +66,14 @@ public class RickAndMortyApiClientJavaNetHttp implements RickAndMortyApiClient {
                             .build(),
                     _JavaNetHttpUtils.newJsonBodyHandler(objectMapper, type)
             );
-            final var statusCode = response.statusCode();
-            if (statusCode == HttpURLConnection.HTTP_NOT_FOUND) {
-                throw new IOException("not found; path: " + path);
-            }
-            if (statusCode != HttpURLConnection.HTTP_OK) {
-                throw new IOException("unexpected response code: " + statusCode);
-            }
-            return response.body().get();
+            return response.body();
         } catch (final InterruptedException ie) {
             Thread.currentThread().interrupt();
             throw new RuntimeException("interrupted while reading " + path, ie);
         }
     }
 
-    // -----------------------------------------------------------------------------------------------------------------
-
+    // ------------------------------------------------------------------------------------------------------ /character
     @Override
     public Optional<CharacterPage> getAllCharacters(final int page) throws IOException {
         RickAndMortyApiClientUtils.requirePositivePage(page);
@@ -172,11 +107,14 @@ public class RickAndMortyApiClientJavaNetHttp implements RickAndMortyApiClient {
         );
     }
 
-    // -----------------------------------------------------------------------------------------------------------------
-
+    // -------------------------------------------------------------------------------------------------------- /episode
     @Override
     public Optional<EpisodePage> getAllEpisodes(final int page) throws IOException {
-        return Optional.empty();
+        RickAndMortyApiClientUtils.requirePositivePage(page);
+        return read(
+                "/episode?page=" + page,
+                EpisodePage.class
+        );
     }
 
     @Override
@@ -186,34 +124,55 @@ public class RickAndMortyApiClientJavaNetHttp implements RickAndMortyApiClient {
 
     @Override
     public List<EpisodeType> getEpisodes(final int... ids) throws IOException {
-        return List.of();
+        RickAndMortyApiClientUtils.requireNonEmptyIds(ids);
+        return read(
+                "/episode/" + RickAndMortyApiClientUtils.joinIds(ids),
+                new TypeReference<>() {
+                }
+        );
     }
 
     @Override
     public Optional<EpisodeType> getEpisode(final int id) throws IOException {
-        return Optional.empty();
+        RickAndMortyApiClientUtils.requirePositiveId(id);
+        return read(
+                "/episode/" + id,
+                EpisodeType.class
+        );
     }
 
-    // -----------------------------------------------------------------------------------------------------------------
-
+    // ------------------------------------------------------------------------------------------------------- /location
     @Override
     public Optional<LocationPage> getAllLocations(final int page) throws IOException {
-        return Optional.empty();
-    }
-
-    @Override
-    public List<LocationType> getLocations(final int... ids) throws IOException {
-        return List.of();
-    }
-
-    @Override
-    public Optional<LocationType> getLocation(final int id) throws IOException {
-        return Optional.empty();
+        RickAndMortyApiClientUtils.requirePositivePage(page);
+        return read(
+                "/location?page=" + page,
+                LocationPage.class
+        );
     }
 
     @Override
     public List<LocationType> getAllLocations() {
         return RickAndMortyApiClient.super.getAllLocations();
+    }
+
+    @Override
+    public List<LocationType> getLocations(final int... ids) throws IOException {
+        RickAndMortyApiClientUtils.requireNonEmptyIds(ids);
+        return read(
+                "/location/" + RickAndMortyApiClientUtils.joinIds(ids),
+                new TypeReference<>() {
+                }
+        );
+    }
+
+    @Override
+    public Optional<LocationType> getLocation(final int id) throws IOException {
+        RickAndMortyApiClientUtils.requirePositiveId(id);
+        return read(
+                "/location/" + id,
+                LocationType.class
+        );
     }
 
     // -----------------------------------------------------------------------------------------------------------------

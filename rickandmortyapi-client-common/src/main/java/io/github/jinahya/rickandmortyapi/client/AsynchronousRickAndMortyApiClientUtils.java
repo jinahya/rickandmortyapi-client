@@ -4,14 +4,18 @@ import io.github.jinahya.rickandmortyapi.client.type.CharacterType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 
 final class AsynchronousRickAndMortyApiClientUtils {
 
     // ------------------------------------------------------------------------------------------------------- character
     private static CompletableFuture<List<CharacterType>> getAllCharacters(
-            final AsynchronousRickAndMortyApiClient client, final int page, final List<CharacterType> list) {
-        return client.getAllCharacters(page).thenComposeAsync(r -> {
+            final Executor executor, final AsynchronousRickAndMortyApiClient client, final int page,
+            final List<CharacterType> list) {
+        Objects.requireNonNull(executor, "executor is null");
+        return client.getAllCharacters(executor, page).thenComposeAsync(r -> {
             if (r == null) {
                 return CompletableFuture.completedFuture(list);
             }
@@ -19,12 +23,13 @@ final class AsynchronousRickAndMortyApiClientUtils {
             if (r.getInfo().getNext() == null) {
                 return CompletableFuture.completedFuture(list);
             }
-            return getAllCharacters(client, page + 1, list);
+            return getAllCharacters(executor, client, page + 1, list);
         });
     }
 
-    static CompletableFuture<List<CharacterType>> getAllCharacters(final AsynchronousRickAndMortyApiClient client) {
-        return getAllCharacters(client, 1, new ArrayList<>());
+    static CompletableFuture<List<CharacterType>> getAllCharacters(final Executor executor,
+                                                                   final AsynchronousRickAndMortyApiClient client) {
+        return getAllCharacters(executor, client, 1, new ArrayList<>());
     }
 
     // -----------------------------------------------------------------------------------------------------------------
