@@ -16,7 +16,8 @@ import java.io.Serial;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CharacterPage extends BasePageType<CharacterType> {
+public class CharacterPage
+        extends BasePageType<CharacterType> {
 
     @Serial
     private static final long serialVersionUID = 8948382969358427279L;

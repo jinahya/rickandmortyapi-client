@@ -27,6 +27,8 @@
     <maven.compiler.testRelease>${maven.compiler.target}</maven.compiler.testRelease>
     <version.maven-failsafe>${version.maven-surefire}</version.maven-failsafe>
     <version.maven-surefire>3.5.4</version.maven-surefire>
+    <version.com.google.errorprone>2.45.0</version.com.google.errorprone>
+    <version.com.uber.nullaway>0.12.15</version.com.uber.nullaway>
     <version.org.projectlombok>1.18.42</version.org.projectlombok>
     <!-- https://central.sonatype.com/artifact/com.guardsquare/proguard-core/versions -->
     <version.proguard-core>9.2.0</version.proguard-core>
@@ -50,9 +52,23 @@
         <scope>import</scope>
       </dependency>
       <dependency>
+        <groupId>com.google.errorprone</groupId>
+        <artifactId>error_prone_parent</artifactId>
+        <version>${version.com.google.errorprone}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
         <groupId>com.guardsquare</groupId>
         <artifactId>proguard-core</artifactId>
         <version>${version.proguard-core}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.uber.nullaway</groupId>
+        <artifactId>nullaway-bom</artifactId>
+        <version>${version.com.uber.nullaway}</version>
+        <type>pom</type>
+        <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>io.vavr</groupId>
@@ -132,6 +148,14 @@
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jspecify</groupId>
+      <artifactId>jspecify</artifactId>
+      <version>1.0.0</version>
+      <!-- https://jspecify.dev/docs/using/ -->
+      <!-- they're saying: Avoid using provided or optional scope. -->
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -228,6 +252,16 @@
               <groupId>org.projectlombok</groupId>
               <artifactId>lombok</artifactId>
               <version>${version.org.projectlombok}</version>
+            </path>
+            <path>
+              <groupId>com.google.errorprone</groupId>
+              <artifactId>error_prone_core</artifactId>
+              <version>${version.com.google.errorprone}</version>
+            </path>
+            <path>
+              <groupId>com.uber.nullaway</groupId>
+              <artifactId>nullaway</artifactId>
+              <version>${version.com.uber.nullaway}</version>
             </path>
           </annotationProcessorPaths>
         </configuration>

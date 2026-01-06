@@ -15,7 +15,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @Slf4j
-class CharacterPageTest extends BasePageTypeTest<CharacterPage, CharacterType> {
+class CharacterPageTest
+        extends BasePageTypeTest<CharacterPage, CharacterType> {
 
     CharacterPageTest() {
         super(CharacterPage.class, CharacterType.class);
@@ -35,7 +36,8 @@ class CharacterPageTest extends BasePageTypeTest<CharacterPage, CharacterType> {
         }
 
         @Test
-        void __Jsonb() throws Exception {
+        void __Jsonb()
+                throws Exception {
             final var value = _JsonbTestUtils.readValueFromResource(getClass(), "character_.json", typeClass);
         }
     }
@@ -47,7 +49,8 @@ class CharacterPageTest extends BasePageTypeTest<CharacterPage, CharacterType> {
 
     @MethodSource({"resources"})
     @ParameterizedTest
-    void __Jackson(final String name) throws IOException {
+    void __Jackson(final String name)
+            throws IOException {
         final var value = _JacksonTestUtils.readValueFromResource(getClass(), name, typeClass);
         log.debug("name: {}, value: {}", name, value);
         assertThat(value).isNotNull();
@@ -55,7 +58,8 @@ class CharacterPageTest extends BasePageTypeTest<CharacterPage, CharacterType> {
 
     @MethodSource({"resources"})
     @ParameterizedTest
-    void __Jsonb(final String name) throws Exception {
+    void __Jsonb(final String name)
+            throws Exception {
         final var value = _JsonbTestUtils.readValueFromResource(getClass(), name, typeClass);
         log.debug("name: {}, value: {}", name, value);
         assertThat(value).isNotNull();

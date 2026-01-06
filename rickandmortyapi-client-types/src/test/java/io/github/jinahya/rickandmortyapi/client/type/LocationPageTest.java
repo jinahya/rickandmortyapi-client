@@ -8,7 +8,8 @@ import java.io.IOException;
 import java.util.stream.Stream;
 
 @Slf4j
-class LocationPageTest extends BasePageTypeTest<LocationPage, LocationType> {
+class LocationPageTest
+        extends BasePageTypeTest<LocationPage, LocationType> {
 
     LocationPageTest() {
         super(LocationPage.class, LocationType.class);
@@ -21,14 +22,16 @@ class LocationPageTest extends BasePageTypeTest<LocationPage, LocationType> {
 
     @MethodSource({"resources"})
     @ParameterizedTest
-    void __Jackson(final String name) throws IOException {
+    void __Jackson(final String name)
+            throws IOException {
         final var value = _JacksonTestUtils.readValueFromResource(getClass(), name, typeClass);
         log.debug("name: {}, value: {}", name, value);
     }
 
     @MethodSource({"resources"})
     @ParameterizedTest
-    void __Jsonb(final String name) throws Exception {
+    void __Jsonb(final String name)
+            throws Exception {
         final var value = _JsonbTestUtils.readValueFromResource(getClass(), name, typeClass);
         log.debug("name: {}, value: {}", name, value);
     }

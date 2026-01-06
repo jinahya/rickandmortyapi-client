@@ -196,7 +196,8 @@ public abstract class RickAndMortyApiClientIT<CLIENT extends RickAndMortyApiClie
 
     @DisplayName("/character")
     @Nested
-    class Characters_IT extends _IT<CharacterPage, CharacterType> {
+    class Characters_IT
+            extends _IT<CharacterPage, CharacterType> {
 
         Characters_IT() {
             super(
@@ -231,13 +232,15 @@ public abstract class RickAndMortyApiClientIT<CLIENT extends RickAndMortyApiClie
 
         @DisplayName("?page=")
         @Nested
-        class GetAllWithPage_IT extends _GetAllWithPage_IT {
+        class GetAllWithPage_IT
+                extends _GetAllWithPage_IT {
 
         }
 
         @DisplayName("getAll...()")
         @Nested
-        class GetAll_IT extends _GetAll_IT {
+        class GetAll_IT
+                extends _GetAll_IT {
 
             @Test
             @Override
@@ -283,19 +286,22 @@ public abstract class RickAndMortyApiClientIT<CLIENT extends RickAndMortyApiClie
 
         @DisplayName("/1,2,3")
         @Nested
-        class GetWithIds_IT extends _GetWithIds_IT {
+        class GetWithIds_IT
+                extends _GetWithIds_IT {
 
         }
 
         @DisplayName("/1")
         @Nested
-        class GetWithId_IT extends _GetWithId_IT {
+        class GetWithId_IT
+                extends _GetWithId_IT {
 
         }
     }
 
     @Nested
-    class Episodes_IT extends _IT<EpisodePage, EpisodeType> {
+    class Episodes_IT
+            extends _IT<EpisodePage, EpisodeType> {
 
         Episodes_IT() {
             super(
@@ -330,13 +336,15 @@ public abstract class RickAndMortyApiClientIT<CLIENT extends RickAndMortyApiClie
 
         @DisplayName("?page=")
         @Nested
-        class GetAllWithPage_IT extends _GetAllWithPage_IT {
+        class GetAllWithPage_IT
+                extends _GetAllWithPage_IT {
 
         }
 
         @DisplayName("getAll...()")
         @Nested
-        class GetAll_IT extends _GetAll_IT {
+        class GetAll_IT
+                extends _GetAll_IT {
 
             @Test
             @Override
@@ -351,19 +359,22 @@ public abstract class RickAndMortyApiClientIT<CLIENT extends RickAndMortyApiClie
 
         @DisplayName("/1,2,3")
         @Nested
-        class GetWithIds_IT extends _GetWithIds_IT {
+        class GetWithIds_IT
+                extends _GetWithIds_IT {
 
         }
 
         @DisplayName("/1")
         @Nested
-        class GetWithId_IT extends _GetWithId_IT {
+        class GetWithId_IT
+                extends _GetWithId_IT {
 
         }
     }
 
     @Nested
-    class Locations_IT extends _IT<LocationPage, LocationType> {
+    class Locations_IT
+            extends _IT<LocationPage, LocationType> {
 
         Locations_IT() {
             super(
@@ -398,13 +409,15 @@ public abstract class RickAndMortyApiClientIT<CLIENT extends RickAndMortyApiClie
 
         @DisplayName("?page=")
         @Nested
-        class GetAllWithPage_IT extends _GetAllWithPage_IT {
+        class GetAllWithPage_IT
+                extends _GetAllWithPage_IT {
 
         }
 
         @DisplayName("getAll...()")
         @Nested
-        class GetAll_IT extends _GetAll_IT {
+        class GetAll_IT
+                extends _GetAll_IT {
 
             @Test
             @Override
@@ -424,13 +437,15 @@ public abstract class RickAndMortyApiClientIT<CLIENT extends RickAndMortyApiClie
 
         @DisplayName("/1,2,3")
         @Nested
-        class GetWithIds_IT extends _GetWithIds_IT {
+        class GetWithIds_IT
+                extends _GetWithIds_IT {
 
         }
 
         @DisplayName("/1")
         @Nested
-        class GetWithId_IT extends _GetWithId_IT {
+        class GetWithId_IT
+                extends _GetWithId_IT {
 
         }
     }

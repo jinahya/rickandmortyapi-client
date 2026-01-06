@@ -14,7 +14,8 @@ import java.io.Serial;
 @Getter
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class LocationPage extends BasePageType<LocationType> {
+public class LocationPage
+        extends BasePageType<LocationType> {
 
     @Serial
     private static final long serialVersionUID = 5348232151591119753L;

@@ -21,7 +21,8 @@ final class __BaseTypeConstants {
 
     public static final class OfJackson {
 
-        public static final class LocalDateDeserializer extends JsonDeserializer<LocalDate> {
+        public static final class LocalDateDeserializer
+                extends JsonDeserializer<LocalDate> {
 
             @Override
             public LocalDate deserialize(JsonParser p, DeserializationContext ctxt)
@@ -41,15 +42,18 @@ final class __BaseTypeConstants {
 
     public static final class OfJsonb {
 
-        public static final class LocalDateAdapter implements JsonbAdapter<LocalDate, String> {
+        public static final class LocalDateAdapter
+                implements JsonbAdapter<LocalDate, String> {
 
             @Override
-            public String adaptToJson(LocalDate obj) throws Exception {
+            public String adaptToJson(LocalDate obj)
+                    throws Exception {
                 throw new UnsupportedOperationException("not implemented yet");
             }
 
             @Override
-            public LocalDate adaptFromJson(final String obj) throws Exception {
+            public LocalDate adaptFromJson(final String obj)
+                    throws Exception {
                 return Optional.ofNullable(obj)
                         .map(v -> LocalDate.parse(v, DATE_FORMATTER))
                         .orElse(null);

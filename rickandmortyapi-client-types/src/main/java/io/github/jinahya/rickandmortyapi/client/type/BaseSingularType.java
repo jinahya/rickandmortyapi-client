@@ -1,24 +1,20 @@
 package io.github.jinahya.rickandmortyapi.client.type;
 
 import jakarta.json.bind.annotation.JsonbVisibility;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Positive;
-import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.io.Serial;
+import java.net.URL;
 import java.time.Instant;
 import java.util.Comparator;
 import java.util.Objects;
 
 @JsonbVisibility(___NonPrivateVisibilityStrategy.class)
-@Setter(AccessLevel.PROTECTED)
-@Getter
-@EqualsAndHashCode(callSuper = true)
-public abstract class BaseSingularType extends __BaseType {
+public abstract class BaseSingularType
+        extends __BaseType {
 
     @Serial
     private static final long serialVersionUID = -6172731908696246757L;
@@ -55,11 +51,11 @@ public abstract class BaseSingularType extends __BaseType {
     @Override
     public String toString() {
         return super.toString() + '{' +
-                "id=" + id +
-                ",name=" + name +
-                ",url=" + url +
-                ",created=" + created +
-                '}';
+               "id=" + id +
+               ",name=" + name +
+               ",url=" + url +
+               ",created=" + created +
+               '}';
     }
 
     @Override
@@ -67,7 +63,7 @@ public abstract class BaseSingularType extends __BaseType {
         if (!(o instanceof BaseSingularType that)) {
             return false;
         }
-        return id == that.id;
+        return id == null || Objects.equals(id, that.id);
     }
 
     @Override
@@ -94,11 +90,11 @@ public abstract class BaseSingularType extends __BaseType {
     }
 
     // ------------------------------------------------------------------------------------------------------------- url
-    public String getUrl() {
+    public URL getUrl() {
         return url;
     }
 
-    void setUrl(final String url) {
+    void setUrl(final URL url) {
         this.url = url;
     }
 
@@ -114,13 +110,16 @@ public abstract class BaseSingularType extends __BaseType {
     // -----------------------------------------------------------------------------------------------------------------
     @Positive
     @NotNull
-    private int id;
+    private Integer id;
 
+    @NotBlank
     private String name;
 
     // -----------------------------------------------------------------------------------------------------------------
-    private String url;
+    @NotNull
+    private URL url;
 
     @Past
+    @NotNull
     private Instant created;
 }

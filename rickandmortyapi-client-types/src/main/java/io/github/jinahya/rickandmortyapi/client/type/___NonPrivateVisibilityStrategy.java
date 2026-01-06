@@ -6,7 +6,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
-public class ___NonPrivateVisibilityStrategy implements PropertyVisibilityStrategy {
+public class ___NonPrivateVisibilityStrategy
+        implements PropertyVisibilityStrategy {
 
     @Override
     public boolean isVisible(final Field field) {

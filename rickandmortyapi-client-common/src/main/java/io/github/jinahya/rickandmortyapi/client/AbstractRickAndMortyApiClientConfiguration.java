@@ -5,7 +5,8 @@ import jakarta.annotation.Nullable;
 import java.time.Duration;
 import java.util.Optional;
 
-public abstract class AbstractRickAndMortyApiClientConfiguration implements RickAndMortyApiClientConfiguration {
+public abstract class AbstractRickAndMortyApiClientConfiguration
+        implements RickAndMortyApiClientConfiguration {
 
     // -----------------------------------------------------------------------------------------------------------------
     protected AbstractRickAndMortyApiClientConfiguration() {

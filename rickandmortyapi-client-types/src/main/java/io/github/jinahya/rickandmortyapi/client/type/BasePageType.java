@@ -26,7 +26,8 @@ import java.util.List;
         "java:S101", // Class names should comply with a naming convention
         "java:S119"  // Type parameter names should comply with a naming convention
 })
-public abstract class BasePageType<RESULT extends BaseSingularType> extends _BaseResponse {
+public abstract class BasePageType<RESULT extends BaseSingularType>
+        extends _BaseResponse {
 
     @Serial
     private static final long serialVersionUID = -8777583664213758271L;
@@ -37,13 +38,16 @@ public abstract class BasePageType<RESULT extends BaseSingularType> extends _Bas
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
+    // -----------------------------------------------------------------------------------------------------------------
     @JsonbVisibility(___NonPrivateVisibilityStrategy.class)
     @Setter(AccessLevel.PROTECTED)
     @Getter
     @EqualsAndHashCode(callSuper = true)
     @ToString
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    public static class Info extends __BaseType {
+    public static class Info
+            extends __BaseType {
 
         @Serial
         private static final long serialVersionUID = 4910760888074220532L;

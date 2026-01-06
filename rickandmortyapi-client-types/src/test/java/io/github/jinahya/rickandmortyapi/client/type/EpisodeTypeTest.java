@@ -9,7 +9,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-class EpisodeTypeTest extends BaseSingularTypeTest<EpisodeType> {
+class EpisodeTypeTest
+        extends BaseSingularTypeTest<EpisodeType> {
 
     EpisodeTypeTest() {
         super(EpisodeType.class);
@@ -21,14 +22,16 @@ class EpisodeTypeTest extends BaseSingularTypeTest<EpisodeType> {
     class _1_Test {
 
         @Test
-        void __Jackson() throws IOException {
+        void __Jackson()
+                throws IOException {
             final var value =
                     _JacksonTestUtils.readValueFromResource(getClass(), "episode_1.json", EpisodeType.class);
             _ValidationTestUtils.assertValid(value);
         }
 
         @Test
-        void __Jsonb() throws Exception {
+        void __Jsonb()
+                throws Exception {
             final var value =
                     _JsonbTestUtils.readValueFromResource(getClass(), "episode_1.json", EpisodeType.class);
             _ValidationTestUtils.assertValid(value);
@@ -40,7 +43,8 @@ class EpisodeTypeTest extends BaseSingularTypeTest<EpisodeType> {
     class _123_Test {
 
         @Test
-        void __Jackson() throws IOException {
+        void __Jackson()
+                throws IOException {
             final var value =
                     _JacksonTestUtils.readValueFromResource(
                             getClass(),
@@ -52,7 +56,8 @@ class EpisodeTypeTest extends BaseSingularTypeTest<EpisodeType> {
         }
 
         @Test
-        void __Jsonb() throws Exception {
+        void __Jsonb()
+                throws Exception {
             final var type = new ArrayList<EpisodeType>() {
             }.getClass().getGenericSuperclass();
             final var value = _JsonbTestUtils.readValueFromResource(getClass(), "episode_123.json", type);

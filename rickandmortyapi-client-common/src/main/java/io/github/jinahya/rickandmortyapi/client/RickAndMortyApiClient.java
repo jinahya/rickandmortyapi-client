@@ -26,13 +26,14 @@ public interface RickAndMortyApiClient {
      *
      * @param page the page; must be positive.
      * @return an optional of the characters, on the {@code page}; {@link Optional#empty() empty} if the specified page
-     * does not exist.
+     *         does not exist.
      * @throws IllegalArgumentException if {@code page} is not positive.
      * @throws IOException              if an I/O error occurs.
      * @see <a href="https://rickandmortyapi.com/documentation/#get-all-characters">Get all characters</a>
      */
     @Valid
-    Optional<CharacterPage> getAllCharacters(int page) throws IOException;
+    Optional<CharacterPage> getAllCharacters(@Positive int page)
+            throws IOException;
 
     /**
      * Reads all characters.
@@ -55,15 +56,17 @@ public interface RickAndMortyApiClient {
     }
 
     @NotNull
-    List<@Valid @NotNull CharacterType> getCharacters(@NotNull int... ids) throws IOException;
+    List<@Valid @NotNull CharacterType> getCharacters(@NotNull int... ids)
+            throws IOException;
 
     @Valid
-    Optional<CharacterType> getCharacter(@Positive int id) throws IOException;
+    Optional<CharacterType> getCharacter(@Positive int id)
+            throws IOException;
 
     // --------------------------------------------------------------------------------------------------------- episode
     @Valid
-    @NotNull
-    Optional<EpisodePage> getAllEpisodes(@Positive int page) throws IOException;
+    Optional<EpisodePage> getAllEpisodes(@Positive int page)
+            throws IOException;
 
     @NotNull
     default List<@Valid @NotNull EpisodeType> getAllEpisodes() {
@@ -81,15 +84,17 @@ public interface RickAndMortyApiClient {
     }
 
     @NotNull
-    List<@Valid @NotNull EpisodeType> getEpisodes(@NotNull int... ids) throws IOException;
+    List<@Valid @NotNull EpisodeType> getEpisodes(@NotNull int... ids)
+            throws IOException;
 
     @Valid
-    Optional<EpisodeType> getEpisode(@Positive int id) throws IOException;
+    Optional<EpisodeType> getEpisode(@Positive int id)
+            throws IOException;
 
     // -------------------------------------------------------------------------------------------------------- location
     @Valid
-    @NotNull
-    Optional<LocationPage> getAllLocations(@Positive int page) throws IOException;
+    Optional<LocationPage> getAllLocations(@Positive int page)
+            throws IOException;
 
     @NotNull
     default List<@Valid @NotNull LocationType> getAllLocations() {
@@ -107,7 +112,9 @@ public interface RickAndMortyApiClient {
     }
 
     @NotNull
-    List<@Valid @NotNull LocationType> getLocations(@NotNull int... ids) throws IOException;
+    List<@Valid @NotNull LocationType> getLocations(@NotNull int... ids)
+            throws IOException;
 
-    Optional<LocationType> getLocation(@Positive int id) throws IOException;
+    Optional<LocationType> getLocation(@Positive int id)
+            throws IOException;
 }

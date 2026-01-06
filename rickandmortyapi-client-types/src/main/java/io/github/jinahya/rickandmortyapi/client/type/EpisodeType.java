@@ -17,7 +17,8 @@ import java.util.List;
 @JsonbVisibility(___NonPrivateVisibilityStrategy.class)
 @Setter(AccessLevel.PROTECTED)
 @Getter
-public class EpisodeType extends BaseSingularType {
+public class EpisodeType
+        extends BaseSingularType {
 
     @Serial
     private static final long serialVersionUID = -1595871375041895792L;
@@ -34,10 +35,10 @@ public class EpisodeType extends BaseSingularType {
     @Override
     public String toString() {
         return super.toString() + '{' +
-                "airDate=" + airDate +
-                ",episode=" + episode +
-                ",characters=" + characters +
-                '}';
+               "airDate=" + airDate +
+               ",episode=" + episode +
+               ",characters=" + characters +
+               '}';
     }
 
     // --------------------------------------------------------------------------------------------------------- airDate

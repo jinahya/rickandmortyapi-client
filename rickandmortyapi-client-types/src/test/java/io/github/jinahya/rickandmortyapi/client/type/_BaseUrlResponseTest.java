@@ -11,9 +11,11 @@ import java.util.function.Function;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
-class _BaseUrlResponseTest extends __BaseTypeTest<_BaseUrlResponse> {
+class _BaseUrlResponseTest
+        extends __BaseTypeTest<_BaseUrlResponse> {
 
-    private static <R> R applyResource(final Function<? super InputStream, ? extends R> mapper) throws IOException {
+    private static <R> R applyResource(final Function<? super InputStream, ? extends R> mapper)
+            throws IOException {
         Objects.requireNonNull(mapper, "mapper is null");
         try (var stream = _BaseUrlResponseTest.class.getResourceAsStream("base_url.json")) {
             assertThat(stream).isNotNull();
@@ -28,7 +30,8 @@ class _BaseUrlResponseTest extends __BaseTypeTest<_BaseUrlResponse> {
 
     // -----------------------------------------------------------------------------------------------------------------
     @Test
-    void __Jackson() throws IOException {
+    void __Jackson()
+            throws IOException {
         final var value = applyResource(r -> {
             return _JacksonTestUtils.applyObjectMapper(om -> {
                 try {
@@ -42,7 +45,8 @@ class _BaseUrlResponseTest extends __BaseTypeTest<_BaseUrlResponse> {
     }
 
     @Test
-    void __Jsonb() throws IOException {
+    void __Jsonb()
+            throws IOException {
         final var value = applyResource(r -> {
             try {
                 return _JsonbTestUtils.applyJsonb(j -> {

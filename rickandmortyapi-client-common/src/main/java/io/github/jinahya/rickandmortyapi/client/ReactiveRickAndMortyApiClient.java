@@ -12,7 +12,8 @@ public interface ReactiveRickAndMortyApiClient {
 
     // ------------------------------------------------------------------------------------------------------- character
     @NotNull
-    Publisher<CharacterPage> getAllCharacters(@Positive int page) throws IOException;
+    Publisher<CharacterPage> getAllCharacters(@Positive int page)
+            throws IOException;
 
     @NotNull
     Publisher<CharacterType> getAllCharacters();

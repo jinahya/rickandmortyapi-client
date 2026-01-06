@@ -6,7 +6,8 @@ import java.io.Serial;
 import java.util.List;
 
 @JsonbVisibility(___NonPrivateVisibilityStrategy.class)
-public class LocationType extends BaseSingularType {
+public class LocationType
+        extends BaseSingularType {
 
     @Serial
     private static final long serialVersionUID = 947900641364915242L;
@@ -20,10 +21,10 @@ public class LocationType extends BaseSingularType {
     @Override
     public String toString() {
         return super.toString() + '{' +
-                "type=" + type +
-                ",dimension=" + dimension +
-                ",residents=" + residents +
-                '}';
+               "type=" + type +
+               ",dimension=" + dimension +
+               ",residents=" + residents +
+               '}';
     }
 
     // ------------------------------------------------------------------------------------------------------------ type

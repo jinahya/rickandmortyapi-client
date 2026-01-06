@@ -9,7 +9,8 @@ import java.util.function.Function;
 
 final class _JsonbTestUtils {
 
-    static <R> R applyJsonb(final Function<? super Jsonb, ? extends R> mapper) throws Exception {
+    static <R> R applyJsonb(final Function<? super Jsonb, ? extends R> mapper)
+            throws Exception {
         Objects.requireNonNull(mapper, "mapper is null");
         try (var jsonb = JsonbBuilder.newBuilder().build()) {
             return mapper.apply(jsonb);

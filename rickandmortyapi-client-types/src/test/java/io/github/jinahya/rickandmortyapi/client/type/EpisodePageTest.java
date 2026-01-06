@@ -8,13 +8,15 @@ import java.io.IOException;
 import java.util.stream.Stream;
 
 @Slf4j
-class EpisodePageTest extends BasePageTypeTest<EpisodePage, EpisodeType> {
+class EpisodePageTest
+        extends BasePageTypeTest<EpisodePage, EpisodeType> {
 
     EpisodePageTest() {
         super(EpisodePage.class, EpisodeType.class);
     }
 
-//    // -----------------------------------------------------------------------------------------------------------------
+//    //
+//    -----------------------------------------------------------------------------------------------------------------
 //    @DisplayName("episode_.json")
 //    @Nested
 //    class _Test {
@@ -53,14 +55,16 @@ class EpisodePageTest extends BasePageTypeTest<EpisodePage, EpisodeType> {
 
     @MethodSource({"resources"})
     @ParameterizedTest
-    void __Jackson(final String name) throws IOException {
+    void __Jackson(final String name)
+            throws IOException {
         final var value = _JacksonTestUtils.readValueFromResource(getClass(), name, typeClass);
         log.debug("name: {}, value: {}", name, value);
     }
 
     @MethodSource({"resources"})
     @ParameterizedTest
-    void __Jsonb(final String name) throws Exception {
+    void __Jsonb(final String name)
+            throws Exception {
         final var value = _JsonbTestUtils.readValueFromResource(getClass(), name, typeClass);
         log.debug("name: {}, value: {}", name, value);
     }

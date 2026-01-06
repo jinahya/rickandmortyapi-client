@@ -17,7 +17,8 @@ import java.io.Serial;
 @SuppressWarnings({
         "java:S101" // Class names should comply with a naming convention
 })
-abstract class _BaseRequest extends __BaseType {
+abstract class _BaseRequest
+        extends __BaseType {
 
     @Serial
     private static final long serialVersionUID = -6420180898111430473L;

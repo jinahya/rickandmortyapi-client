@@ -4,7 +4,6 @@ import java.util.Objects;
 
 abstract class __BaseTypeTest<T extends __BaseType> {
 
-
     // -----------------------------------------------------------------------------------------------------------------
     __BaseTypeTest(final Class<T> typeClass) {
         super();

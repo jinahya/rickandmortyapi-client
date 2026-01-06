@@ -9,7 +9,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-class CharacterTypeTest extends BaseSingularTypeTest<CharacterType> {
+class CharacterTypeTest
+        extends BaseSingularTypeTest<CharacterType> {
 
     CharacterTypeTest() {
         super(CharacterType.class);
@@ -21,14 +22,16 @@ class CharacterTypeTest extends BaseSingularTypeTest<CharacterType> {
     class _1_Test {
 
         @Test
-        void __Jackson() throws IOException {
+        void __Jackson()
+                throws IOException {
             final var value =
                     _JacksonTestUtils.readValueFromResource(getClass(), "character_1.json", CharacterType.class);
             _ValidationTestUtils.assertValid(value);
         }
 
         @Test
-        void __Jsonb() throws Exception {
+        void __Jsonb()
+                throws Exception {
             final var value =
                     _JsonbTestUtils.readValueFromResource(getClass(), "character_1.json", CharacterType.class);
             _ValidationTestUtils.assertValid(value);
@@ -40,7 +43,8 @@ class CharacterTypeTest extends BaseSingularTypeTest<CharacterType> {
     class _123_Test {
 
         @Test
-        void __Jackson() throws IOException {
+        void __Jackson()
+                throws IOException {
             final var value =
                     _JacksonTestUtils.readValueFromResource(
                             getClass(),
@@ -52,7 +56,8 @@ class CharacterTypeTest extends BaseSingularTypeTest<CharacterType> {
         }
 
         @Test
-        void __Jsonb() throws Exception {
+        void __Jsonb()
+                throws Exception {
             final var type = new ArrayList<CharacterType>() {
             }.getClass().getGenericSuperclass();
             final var value = _JsonbTestUtils.readValueFromResource(getClass(), "character_123.json", type);

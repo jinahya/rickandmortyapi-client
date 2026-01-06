@@ -11,6 +11,7 @@ import io.github.jinahya.rickandmortyapi.client.type.EpisodePage;
 import io.github.jinahya.rickandmortyapi.client.type.EpisodeType;
 import io.github.jinahya.rickandmortyapi.client.type.LocationPage;
 import io.github.jinahya.rickandmortyapi.client.type.LocationType;
+import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -45,9 +46,6 @@ public class RickAndMortyApiClientJavaNet implements RickAndMortyApiClient {
         final var url = uri.toURL();
         final var connection = (HttpURLConnection) url.openConnection();
         configuration.configure(connection);
-        connection.setRequestMethod("GET");
-        connection.setDoOutput(false);
-        connection.setDoInput(true);
         try {
             connection.connect();
             return function.apply(connection);
@@ -56,18 +54,22 @@ public class RickAndMortyApiClientJavaNet implements RickAndMortyApiClient {
         }
     }
 
+    @Nullable
     private <R> R read(final String path, final Function<? super InputStream, ? extends R> mapper) throws IOException {
         Objects.requireNonNull(mapper, "mapper is null");
         return applyConnection(
                 path,
                 c -> {
                     try {
+                        c.setRequestMethod("GET");
+                        c.setDoOutput(false);
+                        c.setDoInput(true);
                         final var responseCode = c.getResponseCode();
                         if (responseCode == HttpURLConnection.HTTP_NOT_FOUND) {
                             return null;
                         }
                         if (responseCode != HttpURLConnection.HTTP_OK) {
-                            throw new IOException("unexpected response code: " + responseCode);
+                            throw new IOException("unexpected response code: " + responseCode + "; from " + path);
                         }
                         return mapper.apply(c.getInputStream());
                     } catch (final IOException ioe) {
@@ -77,6 +79,7 @@ public class RickAndMortyApiClientJavaNet implements RickAndMortyApiClient {
         );
     }
 
+    @Nullable
     private <T> T read(final String path, final Class<T> type) throws IOException {
         Objects.requireNonNull(type, "type is null");
         return read(
@@ -93,24 +96,27 @@ public class RickAndMortyApiClientJavaNet implements RickAndMortyApiClient {
 
     private <T> T read(final String path, final TypeReference<T> type) throws IOException {
         Objects.requireNonNull(type, "type is null");
-        return read(
-                path,
-                b -> {
-                    try {
-                        return objectMapper.readValue(b, type);
-                    } catch (final IOException ioe) {
-                        throw new UncheckedIOException("failed to read " + path, ioe);
-                    }
-                }
-        );
+        return Objects.requireNonNull(
+                read(
+                        path,
+                        b -> {
+                            try {
+                                return objectMapper.readValue(b, type);
+                            } catch (final IOException ioe) {
+                                throw new UncheckedIOException("failed to read " + path, ioe);
+                            }
+                        }
+                ),
+                "null returned; from " + path + "; for " + type);
     }
 
     // ------------------------------------------------------------------------------------------------------ characters
     @Override
     public Optional<CharacterPage> getAllCharacters(final int page) throws IOException {
         RickAndMortyApiClientUtils.requireValidPage(page);
+        final var path = "/character?" + RickAndMortyApiClientConstants.PARAM_PAGE + "=" + page;
         return Optional.ofNullable(read(
-                "/character?" + RickAndMortyApiClientConstants.PARAM_PAGE + "=" + page,
+                path,
                 CharacterPage.class
         ));
     }
@@ -118,8 +124,13 @@ public class RickAndMortyApiClientJavaNet implements RickAndMortyApiClient {
     @Override
     public List<CharacterType> getCharacters(final int... ids) throws IOException {
         RickAndMortyApiClientUtils.requireValidIds(ids);
+        final var path = "/character/" +
+                IntStream.of(ids)
+                        .distinct()
+                        .mapToObj(String::valueOf)
+                        .collect(Collectors.joining(","));
         return read(
-                "/character/" + IntStream.of(ids).distinct().mapToObj(String::valueOf).collect(Collectors.joining(",")),
+                path,
                 new TypeReference<>() {
                 }
         );
@@ -128,8 +139,9 @@ public class RickAndMortyApiClientJavaNet implements RickAndMortyApiClient {
     @Override
     public Optional<CharacterType> getCharacter(final int id) throws IOException {
         RickAndMortyApiClientUtils.requireValidId(id);
+        final var path = "/character/" + id;
         return Optional.ofNullable(read(
-                "/character/" + id,
+                path,
                 CharacterType.class
         ));
     }
@@ -138,8 +150,9 @@ public class RickAndMortyApiClientJavaNet implements RickAndMortyApiClient {
     @Override
     public Optional<EpisodePage> getAllEpisodes(final int page) throws IOException {
         RickAndMortyApiClientUtils.requireValidPage(page);
+        final var path = "/episode?" + RickAndMortyApiClientConstants.PARAM_PAGE + "=" + page;
         return Optional.ofNullable(read(
-                "/episode?" + RickAndMortyApiClientConstants.PARAM_PAGE + "=" + page,
+                path,
                 EpisodePage.class
         ));
     }

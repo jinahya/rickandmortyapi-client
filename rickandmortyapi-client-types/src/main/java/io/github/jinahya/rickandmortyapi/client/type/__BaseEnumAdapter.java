@@ -7,7 +7,8 @@ import java.util.Objects;
 @SuppressWarnings({
         "java:S101" // Class names should comply with a naming convention
 })
-abstract class __BaseEnumAdapter<E extends Enum<E> & __BaseEnum<E>> implements JsonbAdapter<E, String> {
+abstract class __BaseEnumAdapter<E extends Enum<E> & __BaseEnum<E>>
+        implements JsonbAdapter<E, String> {
 
     __BaseEnumAdapter(final Class<E> enumClass) {
         super();
@@ -15,12 +16,14 @@ abstract class __BaseEnumAdapter<E extends Enum<E> & __BaseEnum<E>> implements J
     }
 
     @Override
-    public String adaptToJson(final E obj) throws Exception {
+    public String adaptToJson(final E obj)
+            throws Exception {
         throw new UnsupportedOperationException("not implemented yet");
     }
 
     @Override
-    public E adaptFromJson(final String obj) throws Exception {
+    public E adaptFromJson(final String obj)
+            throws Exception {
         return null;
     }
 
