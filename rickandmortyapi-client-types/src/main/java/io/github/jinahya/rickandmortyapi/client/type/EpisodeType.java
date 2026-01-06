@@ -1,18 +1,22 @@
 package io.github.jinahya.rickandmortyapi.client.type;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import jakarta.json.bind.annotation.JsonbDateFormat;
 import jakarta.json.bind.annotation.JsonbProperty;
-import jakarta.json.bind.annotation.JsonbTypeAdapter;
 import jakarta.json.bind.annotation.JsonbVisibility;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serial;
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Locale;
 
 @JsonbVisibility(___NonPrivateVisibilityStrategy.class)
 @Setter(AccessLevel.PROTECTED)
@@ -60,22 +64,28 @@ public class EpisodeType
     }
 
     // ------------------------------------------------------------------------------------------------------ characters
-    public List<String> getCharacters() {
+    public List<URL> getCharacters() {
         return characters;
     }
 
-    void setCharacters(final List<String> characters) {
+    void setCharacters(final List<URL> characters) {
         this.characters = characters;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+    @Past
+    @NotNull
     @JsonProperty(JSON_NAME_AIR_DATE)
-    @JsonDeserialize(using = __BaseTypeConstants.OfJackson.LocalDateDeserializer.class)
+//    @JsonDeserialize(using = EpisodeType_AirDateDeserializer.class)
+//    @JsonFormat(pattern = "MMMM d, yyyy")
+    @JsonFormat(pattern = EpisodeType_Constants.AIR_DATE_PATTERN, locale = "en")
     @JsonbProperty(JSON_NAME_AIR_DATE)
-    @JsonbTypeAdapter(__BaseTypeConstants.OfJsonb.LocalDateAdapter.class)
+//    @JsonbTypeAdapter(EpisodeType_AirDateAdapter.class)
+    @JsonbDateFormat(value = EpisodeType_Constants.AIR_DATE_PATTERN, locale = "en")
     private LocalDate airDate;
 
+    @NotBlank
     private String episode;
 
-    private List<@NotBlank String> characters;
+    private List<@NotNull URL> characters;
 }

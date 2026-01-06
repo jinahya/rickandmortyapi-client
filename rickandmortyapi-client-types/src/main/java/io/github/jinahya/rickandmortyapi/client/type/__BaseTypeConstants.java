@@ -21,44 +21,12 @@ final class __BaseTypeConstants {
 
     public static final class OfJackson {
 
-        public static final class LocalDateDeserializer
-                extends JsonDeserializer<LocalDate> {
-
-            @Override
-            public LocalDate deserialize(JsonParser p, DeserializationContext ctxt)
-                    throws IOException, JacksonException {
-                final var text = p.getText();
-                if (text == null) {
-                    return null;
-                }
-                return LocalDate.parse(text, DATE_FORMATTER);
-            }
-        }
-
         private OfJackson() {
             throw new AssertionError("instantiation is not allowed");
         }
     }
 
     public static final class OfJsonb {
-
-        public static final class LocalDateAdapter
-                implements JsonbAdapter<LocalDate, String> {
-
-            @Override
-            public String adaptToJson(LocalDate obj)
-                    throws Exception {
-                throw new UnsupportedOperationException("not implemented yet");
-            }
-
-            @Override
-            public LocalDate adaptFromJson(final String obj)
-                    throws Exception {
-                return Optional.ofNullable(obj)
-                        .map(v -> LocalDate.parse(v, DATE_FORMATTER))
-                        .orElse(null);
-            }
-        }
 
         private OfJsonb() {
             throw new AssertionError("instantiation is not allowed");
