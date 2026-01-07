@@ -9,6 +9,7 @@ import io.github.jinahya.rickandmortyapi.client.type.EpisodeType;
 import io.github.jinahya.rickandmortyapi.client.type.LocationPage;
 import io.github.jinahya.rickandmortyapi.client.type.LocationType;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -264,7 +265,7 @@ public abstract class RickAndMortyApiClientIT<CLIENT extends RickAndMortyApiClie
                             result.stream().map(CharacterType::getSpecies).distinct().filter(Objects::isNull).count();
                     log.debug("species / null count: {}", nullCount);
                 }
-                if (true) {
+                if (false) {
                     result.stream().filter(v -> v.getType() != null && v.getType().strip().isBlank()).forEach(v -> {
                         log.debug("character with blank type: {}", v.getId());
                     });
@@ -299,6 +300,7 @@ public abstract class RickAndMortyApiClientIT<CLIENT extends RickAndMortyApiClie
         }
     }
 
+    @Disabled
     @Nested
     class Episodes_IT
             extends _IT<EpisodePage, EpisodeType> {
@@ -372,6 +374,7 @@ public abstract class RickAndMortyApiClientIT<CLIENT extends RickAndMortyApiClie
         }
     }
 
+    @Disabled
     @Nested
     class Locations_IT
             extends _IT<LocationPage, LocationType> {

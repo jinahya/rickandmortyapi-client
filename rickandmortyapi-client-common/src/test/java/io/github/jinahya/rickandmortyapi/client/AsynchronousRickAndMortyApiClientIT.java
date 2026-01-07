@@ -22,11 +22,12 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @SuppressWarnings({
         "java:S119" // Type parameter names should comply with a naming convention
 })
-public abstract class AsynchornousRickAndMortyApiClientIT<CLIENT extends AsynchronousRickAndMortyApiClient> {
+public abstract class AsynchronousRickAndMortyApiClientIT<CLIENT extends AsynchronousRickAndMortyApiClient> {
 
-    private final ExecutorService EXECUTOR = Executors.newCachedThreadPool();
+    private static final ExecutorService EXECUTOR = Executors.newCachedThreadPool();
 
-    protected AsynchornousRickAndMortyApiClientIT(final Class<CLIENT> clientClass) {
+    // -----------------------------------------------------------------------------------------------------------------
+    protected AsynchronousRickAndMortyApiClientIT(final Class<CLIENT> clientClass) {
         super();
         this.clientClass = Objects.requireNonNull(clientClass, "clientClass is null");
     }

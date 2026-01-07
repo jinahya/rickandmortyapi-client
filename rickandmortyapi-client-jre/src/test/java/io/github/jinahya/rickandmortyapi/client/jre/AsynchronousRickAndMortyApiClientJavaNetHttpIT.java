@@ -1,9 +1,9 @@
 package io.github.jinahya.rickandmortyapi.client.jre;
 
-import io.github.jinahya.rickandmortyapi.client.AsynchornousRickAndMortyApiClientIT;
+import io.github.jinahya.rickandmortyapi.client.AsynchronousRickAndMortyApiClientIT;
 
 class AsynchronousRickAndMortyApiClientJavaNetHttpIT
-        extends AsynchornousRickAndMortyApiClientIT<AsynchronousRickAndMortyApiClientJavaNetHttp> {
+        extends AsynchronousRickAndMortyApiClientIT<AsynchronousRickAndMortyApiClientJavaNetHttp> {
 
     AsynchronousRickAndMortyApiClientJavaNetHttpIT() {
         super(AsynchronousRickAndMortyApiClientJavaNetHttp.class);

@@ -25,14 +25,14 @@ public class AsynchronousRickAndMortyApiClientJavaNetHttp implements Asynchronou
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    public AsynchronousRickAndMortyApiClientJavaNetHttp(final RickAndMortyApiClientConfigurationJre configuration) {
+    public AsynchronousRickAndMortyApiClientJavaNetHttp(final RickAndMortyApiClientConfigurationJavaNetHttp configuration) {
         super();
         this.configuration = Objects.requireNonNull(configuration, "configuration is null");
         httpClient = this.configuration.configure(HttpClient.newBuilder()).build();
     }
 
     AsynchronousRickAndMortyApiClientJavaNetHttp() {
-        this(new RickAndMortyApiClientConfigurationJre());
+        this(new RickAndMortyApiClientConfigurationJavaNetHttp());
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -85,7 +85,7 @@ public class AsynchronousRickAndMortyApiClientJavaNetHttp implements Asynchronou
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    private final RickAndMortyApiClientConfigurationJre configuration;
+    private final RickAndMortyApiClientConfigurationJavaNetHttp configuration;
 
     private final HttpClient httpClient;
 

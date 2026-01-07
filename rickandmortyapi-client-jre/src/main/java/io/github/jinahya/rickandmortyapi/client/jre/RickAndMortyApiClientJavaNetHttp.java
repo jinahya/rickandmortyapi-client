@@ -22,14 +22,14 @@ import java.util.Optional;
 public class RickAndMortyApiClientJavaNetHttp implements RickAndMortyApiClient {
 
     // -----------------------------------------------------------------------------------------------------------------
-    public RickAndMortyApiClientJavaNetHttp(final RickAndMortyApiClientConfigurationJre configuration) {
+    public RickAndMortyApiClientJavaNetHttp(final RickAndMortyApiClientConfigurationJavaNetHttp configuration) {
         super();
         this.configuration = Objects.requireNonNull(configuration, "configuration is null");
         httpClient = this.configuration.configure(HttpClient.newBuilder()).build();
     }
 
     RickAndMortyApiClientJavaNetHttp() {
-        this(new RickAndMortyApiClientConfigurationJre());
+        this(new RickAndMortyApiClientConfigurationJavaNetHttp());
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -176,7 +176,7 @@ public class RickAndMortyApiClientJavaNetHttp implements RickAndMortyApiClient {
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    private final RickAndMortyApiClientConfigurationJre configuration;
+    private final RickAndMortyApiClientConfigurationJavaNetHttp configuration;
 
     private final HttpClient httpClient;
 

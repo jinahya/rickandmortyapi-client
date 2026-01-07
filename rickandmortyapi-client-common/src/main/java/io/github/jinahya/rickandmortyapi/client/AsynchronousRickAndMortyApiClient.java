@@ -65,7 +65,7 @@ public interface AsynchronousRickAndMortyApiClient {
     }
 
     // ---------------------------------------------------------------------------------------------------- /character/1
-    CompletableFuture<Supplier<CharacterType>> getCharacterDeferred(@Positive final int id);
+    CompletableFuture<Supplier<CharacterType>> getCharacterDeferred(@Positive int id);
 
     default CompletableFuture<CharacterType> getCharacter(@Positive final int id, @NotNull final Executor executor) {
         RickAndMortyApiClientUtils.requireValidId(id);

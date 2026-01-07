@@ -11,7 +11,8 @@ import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
-public class AsynchronousRickAndMortyApiClientJavaNet implements AsynchronousRickAndMortyApiClient {
+public class AsynchronousRickAndMortyApiClientJavaNet
+        implements AsynchronousRickAndMortyApiClient {
 
     // -----------------------------------------------------------------------------------------------------------------
     public AsynchronousRickAndMortyApiClientJavaNet(final RickAndMortyApiClientJavaNet synchronous) {

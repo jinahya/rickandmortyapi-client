@@ -25,8 +25,8 @@ public interface RickAndMortyApiClient {
      * Reads characters on the specified page.
      *
      * @param page the page; must be positive.
-     * @return an optional of the characters, on the {@code page}; {@link Optional#empty() empty} if the specified page
-     *         does not exist.
+     * @return an optional of the characters, on the specified {@code page}; {@link Optional#empty() empty} if the
+     *         specified page does not exist.
      * @throws IllegalArgumentException if {@code page} is not positive.
      * @throws IOException              if an I/O error occurs.
      * @see <a href="https://rickandmortyapi.com/documentation/#get-all-characters">Get all characters</a>
@@ -56,12 +56,10 @@ public interface RickAndMortyApiClient {
     }
 
     @NotNull
-    List<@Valid @NotNull CharacterType> getCharacters(@NotNull int... ids)
-            throws IOException;
+    List<@Valid @NotNull CharacterType> getCharacters(@NotNull int... ids) throws IOException;
 
     @Valid
-    Optional<CharacterType> getCharacter(@Positive int id)
-            throws IOException;
+    Optional<CharacterType> getCharacter(@Positive int id) throws IOException;
 
     // --------------------------------------------------------------------------------------------------------- episode
     @Valid

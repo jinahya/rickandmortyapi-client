@@ -1,16 +1,14 @@
 package io.github.jinahya.rickandmortyapi.client.jre;
 
-import io.github.jinahya.rickandmortyapi.client.AbstractRickAndMortyApiClientConfiguration;
-
 import java.net.URLConnection;
-import java.net.http.HttpClient;
 import java.util.Objects;
 import java.util.Optional;
 
-public class RickAndMortyApiClientConfigurationJre extends AbstractRickAndMortyApiClientConfiguration {
+public class RickAndMortyApiClientConfigurationJavaNet
+        extends _RickAndMortyApiClientConfigurationJre {
 
     // -----------------------------------------------------------------------------------------------------------------
-    public RickAndMortyApiClientConfigurationJre() {
+    public RickAndMortyApiClientConfigurationJavaNet() {
         super();
     }
 
@@ -27,19 +25,5 @@ public class RickAndMortyApiClientConfigurationJre extends AbstractRickAndMortyA
         Optional.ofNullable(getResponseTimeout()).ifPresent(v -> {
         });
         return connection;
-    }
-
-    HttpClient.Builder configure(final HttpClient.Builder builder) {
-        Objects.requireNonNull(builder, "builder is null");
-        Optional.ofNullable(getConnectTimeout()).ifPresent(v -> {
-            builder.connectTimeout(v);
-        });
-        Optional.ofNullable(getWriteTimeout()).ifPresent(v -> {
-        });
-        Optional.ofNullable(getReadTimeout()).ifPresent(v -> {
-        });
-        Optional.ofNullable(getResponseTimeout()).ifPresent(v -> {
-        });
-        return builder;
     }
 }

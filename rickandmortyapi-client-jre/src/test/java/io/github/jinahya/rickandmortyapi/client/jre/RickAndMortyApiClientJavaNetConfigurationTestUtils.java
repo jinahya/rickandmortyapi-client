@@ -11,17 +11,17 @@ final class RickAndMortyApiClientJavaNetConfigurationTestUtils {
     private static final System.Logger logger = System.getLogger(MethodHandles.lookup().lookupClass().getName());
 
     // -----------------------------------------------------------------------------------------------------------------
-    static final String RESOURCE_NAME = "rickandmortyapi-client-javanet-configuration.yaml";
+    static final String RESOURCE_NAME = "rickandmortyapi-client-jre-configuration.yaml";
 
-    static RickAndMortyApiClientConfigurationJre load() throws IOException {
-        try (var resource = RickAndMortyApiClientConfigurationJre.class.getResourceAsStream(RESOURCE_NAME)) {
+    static RickAndMortyApiClientConfigurationJavaNetHttp load() throws IOException {
+        try (var resource = RickAndMortyApiClientConfigurationJavaNetHttp.class.getResourceAsStream(RESOURCE_NAME)) {
             if (resource == null) {
-                return new RickAndMortyApiClientConfigurationJre();
+                return new RickAndMortyApiClientConfigurationJavaNetHttp();
             }
             final var mapper = new YAMLMapper()
                     .findAndRegisterModules()
                     .setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
-            final var value = mapper.readValue(resource, RickAndMortyApiClientConfigurationJre.class);
+            final var value = mapper.readValue(resource, RickAndMortyApiClientConfigurationJavaNetHttp.class);
             logger.log(System.Logger.Level.DEBUG, "value: {0}", value);
             return value;
         }
