@@ -4,11 +4,14 @@ import io.github.jinahya.rickandmortyapi.client.AsynchronousRickAndMortyApiClien
 import io.github.jinahya.rickandmortyapi.client.ReactiveRickAndMortyApiClient;
 import io.github.jinahya.rickandmortyapi.client.type.CharacterPage;
 import io.github.jinahya.rickandmortyapi.client.type.CharacterType;
-import jakarta.validation.constraints.NotNull;
+import org.reactivestreams.Subscription;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ReactiveRickAndMortyApiClientJre
         implements ReactiveRickAndMortyApiClient {
@@ -22,43 +25,92 @@ public class ReactiveRickAndMortyApiClientJre
 
     // -----------------------------------------------------------------------------------------------------------------
     @Override
-    public org.reactivestreams.Publisher<CharacterPage> getAllCharacters(final int page) throws IOException {
-        return s -> client.getAllCharacters(page).whenCompleteAsync(
-                (v, t) -> {
-                    if (t != null) {
-                        s.onError(t);
-                    } else {
-                        s.onNext(v);
-                        s.onComplete();
+    public org.reactivestreams.Publisher<CharacterPage> getCharacterPagePublisher() throws IOException {
+        return s -> {
+            s.onSubscribe(new Subscription() {
+                @Override
+                public void request(final long n) {
+                    if (canceled) {
+                        return;
                     }
-                },
-                executor
-        );
-    }
-
-    @Override
-    public org.reactivestreams.Publisher<CharacterType> getAllCharacters() {
-        return s -> client.getAllCharacters().whenCompleteAsync(
-                (v, t) -> {
-                    if (t != null) {
-                        s.onError(t);
-                    } else {
-                        v.forEach(s::onNext);
-                        s.onComplete();
+                    if (n < 1) {
+                        cancel();
+                        return;
                     }
-                },
-                executor
-        );
+                    for (int i = 0; i < n; i++) {
+                        final var future = client.getAllCharacters(page.incrementAndGet()).whenCompleteAsync(
+                                (v, t) -> {
+                                    if (t != null) {
+                                        s.onError(t);
+                                        cancel();
+                                        return;
+                                    }
+                                    if (v == null) {
+                                        s.onComplete();
+                                        cancel();
+                                        return;
+                                    }
+                                    s.onNext(v);
+                                },
+                                executor
+                        );
+                        try {
+                            final var value = future.get();
+                            if (value == null) { // 404
+                                s.onComplete();
+                                cancel();
+                                break;
+                            }
+                        } catch (final InterruptedException ie) {
+                            Thread.currentThread().interrupt();
+                            s.onError(ie);
+                            cancel();
+                            break;
+                        } catch (final ExecutionException ee) {
+                            s.onError(Optional.ofNullable(ee.getCause()).orElse(ee));
+                            cancel();
+                            break;
+                        }
+                    }
+                }
+
+                @Override
+                public void cancel() {
+                    this.canceled = true;
+                }
+
+                private AtomicInteger page = new AtomicInteger();
+
+                private boolean canceled = false;
+            });
+        };
     }
 
     @Override
-    public org.reactivestreams.Publisher<CharacterType> getCharacters(@NotNull final int... ids) {
-        return null;
-    }
+    public org.reactivestreams.Publisher<CharacterType> getCharacterTypePublisher() throws IOException {
+        return s -> {
+            s.onSubscribe(new Subscription() {
+                @Override
+                public void request(final long n) {
+                    if (canceled) {
+                        return;
+                    }
+                    if (n < 1) {
+                        cancel();
+                        return;
+                    }
+                    for (int p = 1; p <= n; p++) {
+                    }
+                }
 
-    @Override
-    public org.reactivestreams.Publisher<CharacterType> getCharacter(final int id) {
-        return null;
+                @Override
+                public void cancel() {
+                    this.canceled = true;
+                }
+
+                private boolean canceled = false;
+            });
+        };
     }
 
     // -----------------------------------------------------------------------------------------------------------------
